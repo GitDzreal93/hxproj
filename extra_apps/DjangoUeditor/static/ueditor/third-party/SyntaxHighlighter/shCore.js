@@ -3129,7 +3129,7 @@ typeof(exports) != 'undefined' ? exports.SyntaxHighlighter = SyntaxHighlighter :
 			'has extends with before after around override augment';
     
 		this.regexList = [
-			{ regex: /(<<|&lt;&lt;)((\w+)|(['"])(.+?)\4)[\s\S]+?\n\3\5\n/g,	css: 'string' },	// here doc (maybe html encoded)
+			{ regex: /(<<|&lt;&lt;)((\w+)|(['"])(.+?)\4)[\s\S]+?\n\3\5\n/g,	css: 'string' },	// here docs (maybe html encoded)
 			{ regex: /#.*$/gm,										css: 'comments' },
 			{ regex: /^#!.*\n/g,									css: 'preprocessor' },	// shebang
 			{ regex: /-?\w+(?=\s*=(>|&gt;))/g,	css: 'string' }, // fat comma

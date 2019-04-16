@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+</head>
+<body>
+<form action="{% url 'supply_upload' %}" method="post" enctype="multipart/form-data">
+	{% csrf_token %}
+	{{ form.as_p }}
+	<input type="file" name="my_file">
+	<input type="submit">
+</form>
+<div>
+	<hr>
+	<pre>
+		这里是上传的数据:
+		{{ formlist }}
+
+		这里是数据库查到的数据:
+		{{ querydata }}
+
+	</pre>
+	<hr>
+</div>
+</body>
+</html>

@@ -3558,7 +3558,7 @@ vjs.Player.prototype.cancelFullScreen = function(){
 vjs.Player.prototype.enterFullWindow = function(){
   this.isFullWindow = true;
 
-  // Storing original doc overflow value to return to when fullscreen is off
+  // Storing original docs overflow value to return to when fullscreen is off
   this.docOrigOverflow = document.documentElement.style.overflow;
 
   // Add listener for esc key to exit fullscreen
@@ -5461,7 +5461,7 @@ vjs.Flash = vjs.MediaTechController.extend({
     // The only downside of this it seems to trigger another http request to the original page (no matter what's put in the href). Not sure why that is.
 
     // NOTE (2012-01-29): Cannot get Firefox to load the remote hosted SWF into a dynamically created iFrame
-    // Firefox 9 throws a security error, unleess you call location.href right before doc.write.
+    // Firefox 9 throws a security error, unleess you call location.href right before docs.write.
     //    Not sure why that even works, but it causes the browser to look like it's continuously trying to load the page.
     // Firefox 3.6 keeps calling the iframe onload function anytime I write to it, causing an endless loop.
 
@@ -5523,10 +5523,10 @@ vjs.Flash = vjs.MediaTechController.extend({
         // document.domain = document.domain+'/.';
         // iDoc.domain = document.domain+'/.';
 
-        // Tried adding the object to the iframe doc's innerHTML. Security error in all browsers.
+        // Tried adding the object to the iframe docs's innerHTML. Security error in all browsers.
         // iDoc.body.innerHTML = swfObjectHTML;
 
-        // Tried appending the object to the iframe doc's body. Security error in all browsers.
+        // Tried appending the object to the iframe docs's body. Security error in all browsers.
         // iDoc.body.appendChild(swfObject);
 
         // Using document.write actually got around the security error that browsers were throwing.
@@ -5534,7 +5534,7 @@ vjs.Flash = vjs.MediaTechController.extend({
         // Not sure why that's a security issue, but apparently it is.
         iDoc.write(vjs.Flash.getEmbedCode(options['swf'], flashVars, params, attributes));
 
-        // Setting variables on the window needs to come after the doc write because otherwise they can get reset in some browsers
+        // Setting variables on the window needs to come after the docs write because otherwise they can get reset in some browsers
         // So far no issues with swf ready event being called before it's set on the window.
         iWin['player'] = this.player_;
 

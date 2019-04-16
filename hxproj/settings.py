@@ -9,9 +9,12 @@ https://docs.djangoproject.com/en/2.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.0/ref/settings/
 """
-
+from __future__ import absolute_import
 import os
 import sys
+import djcelery
+djcelery.setup_loader()
+
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -51,6 +54,8 @@ INSTALLED_APPS = [
     'apps.users',
     'extra_apps.xadmin',
     'crispy_forms',
+    'djcelery',
+    'celery_app',
 ]
 
 MIDDLEWARE = [
@@ -68,7 +73,8 @@ ROOT_URLCONF = 'hxproj.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')]
+        ,
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -76,6 +82,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -96,7 +103,6 @@ DATABASES = {
         'HOST': "127.0.0.1"
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
@@ -148,3 +154,34 @@ EMAIL_HOST_USER = "dzreal_test@126.com"
 EMAIL_HOST_PASSWORD = "az931020"
 EMAIL_USE_TLS= False
 EMAIL_FROM = "dzreal_test@126.com"
+
+# celery
+BROKER_URL = 'redis://127.0.0.1:6379/0'
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+CELERY_TIMEZONE = 'Asia/Shanghai'
+
+# 调度任务
+# http://www.cnblogs.com/wuyan717/p/9317041.html
+
+from datetime import timedelta
+from celery.schedules import crontab
+
+CELERYBEAT_SCHEDULE = {
+    # 定时任务
+    'refresh_stock_history': {
+        'task': 'celery_app.tasks.refresh_stock_history',
+        'schedule': crontab(minute=0, hour=0),
+        'args': ()
+    },
+    # 定期任务
+    # 'add-every-3-secondes': {
+    #     'task': 'emall_app.tasks.add',
+    #     'schedule': timedelta(seconds=10),
+    #     'args': (5, 5)
+    # },
+
+}

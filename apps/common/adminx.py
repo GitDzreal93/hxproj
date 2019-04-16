@@ -44,9 +44,9 @@ class GlobalSettings(object):
         )
 
 class BusinessAdmin(object):
-    list_display = ['business_code', 'business_name', 'office', 'type', 'is_delete', 'create_time', 'modify_time']
-    search_fields = ['business_code', 'business_name', 'office', 'type']
-    list_filter = ['business_code', 'business_name', 'office', 'type', 'is_delete', 'create_time', 'modify_time']
+    list_display = ['business_code', 'business_name', 'office', 'company_type', 'is_delete', 'create_time', 'modify_time']
+    search_fields = ['business_code', 'business_name', 'office', 'company_type']
+    list_filter = ['business_code', 'business_name', 'office', 'company_type', 'is_delete', 'create_time', 'modify_time']
     model_icon = 'fa fa-address-book-o'
 
 

@@ -11516,7 +11516,7 @@ Chart.prototype = {
 				height = optionsChart.height || adapterRun(renderTo, 'height'),
 				target = e ? e.target : win; // #805 - MooTools doesn't supply e
 				
-			// Width and height checks for display:none. Target is doc in IE8 and Opera,
+			// Width and height checks for display:none. Target is docs in IE8 and Opera,
 			// win in Firefox, Chrome and IE9.
 			if (!chart.hasUserSize && width && height && (target === win || target === doc)) {
 				
