@@ -10,7 +10,7 @@ from .models import OrderRecord
 
 
 class OrderRecordAdmin(object):
-    list_display = ['id', 'business', 'product', 'order_date', 'order_num', 'count', 'price', 'total_price',
+    list_display = ['id', 'business', 'product', 'order_date', 'order_num', 'count', 'price', 'total_price','remarks',
                     'create_time']
     search_fields = ['id', 'business', 'product', 'order_date', 'order_num', 'count', 'price', 'total_price']
     list_filter = ['id', 'business', 'product', 'order_date', 'order_num', 'count', 'price', 'total_price',

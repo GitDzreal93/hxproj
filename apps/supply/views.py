@@ -5,18 +5,18 @@ import pandas as pd
 
 from django.shortcuts import render, HttpResponse
 from django.views.generic.base import View
-from .forms import SupplyDetailUploadForm
+from .forms import UploadSupplyDetailForm
 from apps.supply.models import OrderRecord
 from apps.common.models import Business, Product, Store
 
 
-class InputSupplyDetailView(View):
+class UploadSupplyDetailView(View):
     def get(self, request):
         return render(request, 'supply_upload.html')
 
     def post(self, request):
         '''导入供货信息'''
-        supply_file = SupplyDetailUploadForm(request.POST, request.FILES)
+        supply_file = UploadSupplyDetailForm(request.POST, request.FILES)
         if supply_file.is_valid():
             f = request.FILES.get('supply_file')
             df = pd.read_excel(f, sheet_name="发货数据导入")

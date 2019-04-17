@@ -10,13 +10,14 @@ from .models import SalesRecord
 
 
 class SalesRecordAdmin(object):
-    list_display = ['id', 'store', 'product', 'upload_time', 'create_time', 'retail_sales', 'retail_price',
-                    'project_sales', 'project_price', 'extra']
-    search_fields = ['id', 'store', 'product', 'retail_price', 'project_sales', 'project_price']
-    list_filter = ['id', 'store', 'product', 'upload_time', 'create_time', 'retail_sales', 'retail_price',
-                   'project_sales', 'project_price']
+    list_display = ['id', 'business', 'store', 'product', 'sales_time', 'create_time', 'retail_sales', 'retail_price',
+                    'project_sales', 'project_price', 'wholesale_sales', 'wholesale_price', 'online_sales',
+                    'online_price', 'data_src', 'extra']
+    search_fields = ['id', 'business', 'store', 'product', 'data_src']
+    list_filter = ['id', 'business', 'store', 'product', 'sales_time', 'create_time', 'retail_sales', 'retail_price',
+                   'project_sales', 'project_price', 'wholesale_sales', 'wholesale_price', 'online_sales',
+                   'online_price', 'data_src', ]
     model_icon = 'fa fa-address-book-o'
-
 
 
 xadmin.site.register(SalesRecord, SalesRecordAdmin)

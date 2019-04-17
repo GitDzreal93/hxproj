@@ -8,15 +8,7 @@ from django.contrib import admin
 from django.urls import path,include,re_path
 from .views import *
 
-view_patterns = [
-
-]
-
-api_patterns = [
-
-]
 
 urlpatterns = [
-    path('view/', include(view_patterns)),
-    path('api/', include(api_patterns)),
+    path('sales-upload', UploadSalesDetailView.as_view(), name="sales_upload"),
 ]

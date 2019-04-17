@@ -23,44 +23,46 @@ class GlobalSettings(object):
     site_title = "海信进销存 Admin管理后台"
     site_footer = "海信进销存 Admin管理后台"
     menu_style = "accordion"
-    apps_icons = {"appname":"icon"}
+    apps_icons = {"appname": "icon"}
+
     def get_site_menu(self):
         return (
-            {'title': '管理', 'menus':(
-                {'title':'商家','url': self.get_model_url(Business, 'changelist')},
-                {'title': '门店',  'url': self.get_model_url(Store, 'changelist')},
-                {'title':'产品','url': self.get_model_url(Product, 'changelist')},
+            {'title': '管理', 'menus': (
+                {'title': '商家', 'url': self.get_model_url(Business, 'changelist')},
+                {'title': '门店', 'url': self.get_model_url(Store, 'changelist')},
+                {'title': '产品', 'url': self.get_model_url(Product, 'changelist')},
             )},
-            {'title': '供货', 'menus':(
-                {'title':'供货记录','url': self.get_model_url(OrderRecord, 'changelist')},
+            {'title': '供货', 'menus': (
+                {'title': '供货记录', 'url': self.get_model_url(OrderRecord, 'changelist')},
             )},
-            {'title': '销量', 'menus':(
-                {'title':'销量记录','url': self.get_model_url(SalesRecord, 'changelist')},
+            {'title': '销量', 'menus': (
+                {'title': '销量记录', 'url': self.get_model_url(SalesRecord, 'changelist')},
             )},
-            {'title': '库存', 'menus':(
-                {'title':'商家库存','url': self.get_model_url(Stock, 'changelist')},
+            {'title': '库存', 'menus': (
+                {'title': '商家库存', 'url': self.get_model_url(Stock, 'changelist')},
             )},
 
         )
 
+
 class BusinessAdmin(object):
-    list_display = ['business_code', 'business_name', 'office', 'company_type', 'is_delete', 'create_time', 'modify_time']
+    list_display = ['business_code', 'business_name', 'office', 'company_type', 'create_time', 'modify_time']
     search_fields = ['business_code', 'business_name', 'office', 'company_type']
-    list_filter = ['business_code', 'business_name', 'office', 'company_type', 'is_delete', 'create_time', 'modify_time']
+    list_filter = ['business_code', 'business_name', 'office', 'company_type', 'create_time', 'modify_time']
     model_icon = 'fa fa-address-book-o'
 
 
 class StoreAdmin(object):
-    list_display = ['store_name', 'business', 'is_delete', 'create_time', 'modify_time']
-    search_fields = ['store_name', 'business', 'is_delete']
-    list_filter = ['store_name', 'business', 'is_delete', 'create_time', 'modify_time']
+    list_display = ['store_code', 'store_name', 'business', 'create_time', 'modify_time']
+    search_fields = ['store_code', 'store_name', 'business']
+    list_filter = ['store_code', 'store_name', 'business', 'create_time', 'modify_time']
     model_icon = 'fa fa-address-book-o'
 
 
 class ProductAdmin(object):
-    list_display = ['product_name', 'product_mod', 'specifications', 'is_delete', 'create_time', 'modify_time']
-    search_fields = ['product_name', 'product_mod', 'specifications', 'is_delete']
-    list_filter = ['product_name', 'product_mod', 'specifications', 'is_delete', 'create_time', 'modify_time']
+    list_display = ['product_name', 'product_mod', 'specifications', 'create_time', 'modify_time']
+    search_fields = ['product_name', 'product_mod', 'specifications']
+    list_filter = ['product_name', 'product_mod', 'specifications', 'create_time', 'modify_time']
     model_icon = 'fa fa-address-book-o'
 
 
