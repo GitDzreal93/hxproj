@@ -11,4 +11,5 @@ from .views import *
 
 urlpatterns = [
     path('sales-upload', UploadSalesDetailView.as_view(), name="sales_upload"),
+    path('sales-record', SalesRecordView.as_view(), name='sales_record'),
 ]

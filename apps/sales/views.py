@@ -39,22 +39,6 @@ class UploadSalesDetailView(View):
                 online_sales = input_data.get("电商销量")
                 online_price = float(input_data.get("实际电商金额"))
                 data_src = input_data.get("数据来源")
-                print("business_code", type(business_code))
-                print("business_name", type(business_name))
-                print("store_code", type(store_code))
-                print("store_name", type(store_name))
-                print("product_mod", type(product_mod))
-                print("sales_time", type(sales_time))
-                print(sales_time)
-                print("retail_sales", type(retail_sales))
-                print("retail_price", type(retail_price))
-                print("project_sales", type(project_sales))
-                print("project_price", type(project_price))
-                print("wholesale_sales", type(wholesale_sales))
-                print("wholesale_price", type(wholesale_price))
-                print("online_sales", type(online_sales))
-                print("online_price", type(online_price))
-                print("data_src", type(data_src))
                 # 假如没有商家信息的话，就插入商家信息
                 try:
                     Business.objects.get(business_code=business_code)
@@ -97,3 +81,49 @@ class UploadSalesDetailView(View):
                 ).save()
             queryset = list(SalesRecord.objects.all().values())
             return render(request, 'sales_upload.html', {"formlist": data_lst, "querydata": queryset})
+
+
+class SalesRecordView(View):
+    def get(self, request):
+        queryset = SalesRecord.objects.all()
+        data = {}
+        data["title"] = dict(
+            business='商家信息',
+            store='门店信息',
+            product='产品信息',
+            retail='零售',
+            project='工程',
+            wholesale='批发',
+            online='电商'
+        )
+        product_lst = []
+        for product in queryset.values():
+            product_dict = dict(
+                product_mod=product.get("product_mod"),
+                product_name=product.get("product_name"),
+                specifications=product.get("specifications"),
+            )
+            product_lst.append(product_dict)
+        data["product_lst"] = product_lst
+        print(data)
+#         business = models.ForeignKey(Business, to_field="business_code", on_delete=models.CASCADE, verbose_name="商家代码",
+#                                      help_text="商家代码")
+# store = models.ForeignKey(Store, to_field="store_code", on_delete=models.CASCADE, verbose_name="门店代码",
+#                           help_text="门店代码")
+# product = models.ForeignKey(Product, to_field="product_mod", on_delete=models.CASCADE, verbose_name="产品型号",
+#                             help_text="产品型号")
+# sales_time = models.DateField(verbose_name="销售日期", help_text="销售日期")
+# create_time = models.DateTimeField(default=datetime.now, verbose_name="创建时间", help_text="创建时间")
+# retail_sales = models.IntegerField(default=0, null=True, blank=True, verbose_name="零售销量", help_text="零售销量")
+# retail_price = models.FloatField(default=0, null=True, blank=True, verbose_name="实际零售金额", help_text="实际零售金额")
+# project_sales = models.IntegerField(default=0, null=True, blank=True, verbose_name="工程销量", help_text="工程销量")
+# project_price = models.FloatField(default=0, null=True, blank=True, verbose_name="实际工程金额", help_text="实际工程金额")
+# wholesale_sales = models.IntegerField(default=0, null=True, blank=True, verbose_name="批发销量", help_text="批发销量")
+# wholesale_price = models.FloatField(default=0, null=True, blank=True, verbose_name="实际批发金额", help_text="实际批发金额")
+# online_sales = models.IntegerField(default=0, null=True, blank=True, verbose_name="电商销量", help_text="电商销量")
+# online_price = models.FloatField(default=0, null=True, blank=True, verbose_name="实际电商金额", help_text="实际电商金额")
+# data_src = models.CharField(default="", max_length=100, null=True, blank=True, verbose_name="数据来源",
+#                             help_text="数据来源")
+# extra = models.TextField(default="", null=True, blank=True, verbose_name="拓展字段", help_text="拓展字段")
+
+        return render(request, 'hx/sales_record.html',{"data":data})

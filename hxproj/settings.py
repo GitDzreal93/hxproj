@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'djcelery',
     'celery_app',
+    # 'pure_pagination',
 ]
 
 MIDDLEWARE = [
@@ -185,3 +186,10 @@ CELERYBEAT_SCHEDULE = {
     # },
 
 }
+
+# 分页配置
+# PAGINATION_SETTINGS = {
+#     'PAGE_RANGE_DISPLAYED': 10,
+#     'MARGIN_PAGES_DISPLAYED': 2,
+#     'SHOW_FIRST_PAGE_WHEN_INVALID': True,
+# }
