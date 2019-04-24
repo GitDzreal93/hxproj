@@ -1,10 +1,15 @@
+import math
+
 from django.shortcuts import render
 from django.views.generic.base import View
 from django.http import HttpResponse
 from django.db.utils import IntegrityError
+from django.db.models import Q
 from .forms import InitDataUploadForm
 from celery_app.tasks import *
 from apps.stock.models import *
+from apps.supply.models import *
+from apps.sales.models import *
 import pandas as pd
 
 
@@ -51,15 +56,79 @@ class InitDataView(View):
                           {"err": "suceess", "errno": 0, "errmsg": '', "file_table": input_lst, "db_table": output_lst})
 
 
+class StockNowView(View):
+    def get(self, request):
+        queryset = Stock.objects.all()
+        data = {}
+        data["title"] = dict(
+            business_code='商家代码',
+            business_name='商家名称',
+            product_mod='产品型号',
+            stock_count='库存数',
+            modify_time='更新时间',
+            remark='备注'
+        )
+        order_record_lst = []
+        for order in queryset.values():
+            # 获取商家信息
+            business_code = order.get("business_id")
+            business_query = Business.objects.filter(business_code=business_code).values('business_name')
+            business_name = business_query[0].get("business_name")
+            # 产品型号
+            product_mod = order.get("product_id")
+
+            order_dict = dict(
+                business_code=business_code,
+                business_name=business_name,
+                product_mod=product_mod,
+                stock_count=order.get("stock_count"),
+                modify_time=order.get("modify_time")
+            )
+            order_record_lst.append(order_dict)
+        data["order_lst"] = order_record_lst
+        return render(request, 'hx/stock_now.html', {"data": data})
+
+# class StockHistoryView(View):
+#     def get(self, request):
+#         queryset = StockHistory.objects.all()
+#         data = {}
+#         data["title"] = dict(
+#             business_code='商家代码',
+#             business_name='商家名称',
+#             product_mod='产品型号',
+#             stock_count='库存数',
+#             modify_time='更新时间',
+#             remark='备注'
+#         )
+#         order_record_lst = []
+#         for order in queryset.values():
+#             # 获取商家信息
+#             business_code = order.get("business_id")
+#             business_query = Business.objects.filter(business_code=business_code).values('business_name')
+#             business_name = business_query[0].get("business_name")
+#             # 产品型号
+#             product_mod = order.get("product_id")
+#
+#             order_dict = dict(
+#                 business_code=business_code,
+#                 business_name=business_name,
+#                 product_mod=product_mod,
+#                 stock_count=order.get("stock_count"),
+#                 modify_time=order.get("modify_time")
+#             )
+#             order_record_lst.append(order_dict)
+#         data["order_lst"] = order_record_lst
+#         return render(request, 'hx/stock_now.html', {"data": data})
+
+
 class StockHistoryView(View):
     def get(self, request):
-        output_lst = StockHistory.objects.all().values()
-        return render(request, 'history_stock.html', {"output":output_lst})
+        return render(request, 'hx/stock_history.html')
 
-    def post(self, request):
-        try:
-            result = refresh_stock_history.delay()
-            print(result)
-        except:
-            return render(request, 'history_stock.html', {"err":"fail"})
-        return render(request, 'history_stock.html', {"err":"suceess"})
+    # def post(self, request):
+    #     try:
+    #         result = refresh_stock_history.delay()
+    #         print(result)
+    #     except:
+    #         return render(request, 'history_stock.html', {"err": "fail"})
+    #     return render(request, 'history_stock.html', {"err": "suceess"})

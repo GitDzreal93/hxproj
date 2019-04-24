@@ -10,4 +10,5 @@ from .views import *
 # urlpatterns 主要用于渲染html，所有数据交互全部交给drf
 urlpatterns = [
     path('supply-upload', UploadSupplyDetailView.as_view(), name="supply_upload"),
+    path('supply-record', SupplyRecordView.as_view(), name='supply_record')
 ]

@@ -12,4 +12,5 @@ from .views import *
 urlpatterns = [
     path('init-upload/', InitDataView.as_view(), name="init_upload"),
     path('stock-history/', StockHistoryView.as_view(), name="stock_history"),
+    path('stock-now/', StockNowView.as_view(), name="stock_now"),
 ]

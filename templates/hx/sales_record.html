@@ -57,7 +57,7 @@
 									</div>
 									<div class="form-group col-lg-2">
 										<div class="input-group">
-											<span class="input-group-addon">产品名称</span>
+											<span class="input-group-addon">产品型号</span>
 											<input class="form-control" type="text">
 										</div>
 									</div>
@@ -69,7 +69,7 @@
 									<br>
 									<br>
 									<div class="col-md-4">
-										<span style="color: orange">温馨提示：列表默认选择昨天至今的销量数据</span>
+										<span style="color: orange">温馨提示：列表默认选择昨天至今天的销量数据</span>
 									</div>
 									<br>
 									<br>
@@ -92,49 +92,49 @@
 					<div class="row" style="margin-bottom:10px">
 						<div class="col-md-2">
 							<span class="label label-default">商家总数</span>
-							<span>Info</span>
+							<span>{{ data.calc.business_calc }}</span>
 						</div>
 						<div class="col-md-2">
 							<span class="label label-primary">门店总数</span>
-							<span>Info</span>
+							<span>{{ data.calc.store_calc }}</span>
 						</div>
 						<div class="col-md-2">
 							<span class="label label-success">产品总数</span>
-							<span>Info</span>
+							<span>{{ data.calc.product_calc }}</span>
 						</div>
 						<div class="col-md-2">
 							<span class="label label-info">零售总销量</span>
-							<span>Info</span>
+							<span>{{ data.calc.retail_sales_calc }} 件</span>
 						</div>
 						<div class="col-md-2">
 							<span class="label label-warning">实际零售总额</span>
-							<span>Info</span>
+							<span>{{ data.calc.retail_price_calc }} 元</span>
 						</div>
 						<div class="col-md-2">
 							<span class="label label-info">批发总销量</span>
-							<span>Info</span>
+							<span>{{ data.calc.wholesale_sales_calc }} 件</span>
 						</div>
 						<br>
 						<br>
 						<div class="col-md-2">
 							<span class="label label-warning">实际批发总额</span>
-							<span>Info</span>
+							<span>{{ data.calc.wholesale_price_calc }} 元</span>
 						</div>
 						<div class="col-md-2">
 							<span class="label label-info">工程总销量</span>
-							<span>Info</span>
+							<span>{{ data.calc.project_sales_calc }} 件</span>
 						</div>
 						<div class="col-md-2">
 							<span class="label label-warning">实际工程总额</span>
-							<span>Info</span>
+							<span>{{ data.calc.project_price_calc }} 元</span>
 						</div>
 						<div class="col-md-2">
 							<span class="label label-info">电商总销量</span>
-							<span>Info</span>
+							<span>{{ data.calc.online_sales_calc }} 件</span>
 						</div>
 						<div class="col-md-2">
 							<span class="label label-warning">实际电商总额</span>
-							<span>Info</span>
+							<span>{{ data.calc.online_price_calc }} 元</span>
 						</div>
 					</div>
 					<br><br>
@@ -151,38 +151,43 @@
 								<th>{{ data.title.online }}</th>
 							</tr>
 						</thead>
-
+						
+						{% for sales in  data.sales_lst %}
 						<tr>
 							<th>
-								<span class="label label-danger">商家名称</span>
-								<span class="label label-danger">（商家代码）</span>
+								<span class="label label-default">{{ sales.business_name }}</span>
+								<span class="label label-default">（{{ sales.business_code }}）</span>
 							</th>
 							<th>
-								<span class="label label-danger">门店名称</span>
-								<span class="label label-danger">（门店代码）</span>
+								<span class="label label-primary">{{ sales.store_name }}</span>
+								<span class="label label-primary">（{{ sales.store_code }}）</span>
 							</th>
 							<th>
-								<span class="label label-danger">产品型号</span>
+								<span class="label label-success">{{ sales.product_mod }}</span>
 							</th>
 							<th>
-								<span class="label label-danger">零售销量</span>
-								<span class="label label-danger">零售金额</span>
+								<span class="label label-info">零售销量：{{ sales.retail_sales }}件</span>
+								<br><br>
+								<span class="label label-info">零售金额：{{ sales.retail_sales }}元</span>
 							</th>
 							<th>
-								<span class="label label-danger">批发销量</span>
-								<span class="label label-danger">批发金额</span>
+								<span class="label label-info">批发销量：{{ sales.wholesale_sales }}件</span>
+								<br><br>
+								<span class="label label-info">批发金额：{{ sales.wholesale_price }}元</span>
 
 							</th>
 							<th>
-								<span class="label label-danger">工程销量</span>
-								<span class="label label-danger">工程金额</span>
+								<span class="label label-info">工程销量：{{ sales.project_sales }}件</span>
+								<br><br>
+								<span class="label label-info">工程金额：{{ sales.project_price }}元</span>
 							</th>
 							<th>
-								<span class="label label-danger">电商销量</span>
-								<span class="label label-danger">电商金额</span>
+								<span class="label label-info">电商销量：{{ sales.online_sales }}件</span>
+								<br><br>
+								<span class="label label-info">电商金额：{{ sales.online_price }}元</span>
 							</th>
 						</tr>
-
+						{% endfor %}
 						<!-- {% for bussiness in  data.business_list %}
 								<tr>
 									<th>{{ bussiness.business_code }}</th>

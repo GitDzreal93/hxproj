@@ -3,6 +3,7 @@ from __future__ import absolute_import
 import json
 from dateutil.parser import parse
 import pandas as pd
+import math
 
 from django.shortcuts import render, HttpResponse
 from django.views.generic.base import View
@@ -96,34 +97,55 @@ class SalesRecordView(View):
             wholesale='批发',
             online='电商'
         )
-        product_lst = []
-        for product in queryset.values():
-            product_dict = dict(
-                product_mod=product.get("product_mod"),
-                product_name=product.get("product_name"),
-                specifications=product.get("specifications"),
+        sales_lst = []
+        for sales in queryset.values():
+            # 获取商家信息
+            business_code = sales.get("business_id")
+            business_query = Business.objects.filter(business_code=business_code).values('business_name')
+            business_name = business_query[0].get("business_name")
+            # 获取门店信息
+            store_code = sales.get("store_id")
+            store_query = Store.objects.filter(store_code=store_code).values('store_name')
+            store_name = store_query[0].get("store_name")
+            # 产品型号
+            product_mod = sales.get("product_id")
+            sales_dict = dict(
+                business_name=business_name,
+                business_code=business_code,
+                store_name=store_name,
+                store_code=store_code,
+                product_mod=product_mod,
+                retail_sales=sales.get("retail_sales"),
+                retail_price=sales.get("retail_price"),
+                project_sales=sales.get("project_sales"),
+                project_price=sales.get("project_price"),
+                wholesale_sales=sales.get("wholesale_sales"),
+                wholesale_price=sales.get("wholesale_price"),
+                online_sales=sales.get("online_sales"),
+                online_price=sales.get("online_price"),
             )
-            product_lst.append(product_dict)
-        data["product_lst"] = product_lst
-        print(data)
-#         business = models.ForeignKey(Business, to_field="business_code", on_delete=models.CASCADE, verbose_name="商家代码",
-#                                      help_text="商家代码")
-# store = models.ForeignKey(Store, to_field="store_code", on_delete=models.CASCADE, verbose_name="门店代码",
-#                           help_text="门店代码")
-# product = models.ForeignKey(Product, to_field="product_mod", on_delete=models.CASCADE, verbose_name="产品型号",
-#                             help_text="产品型号")
-# sales_time = models.DateField(verbose_name="销售日期", help_text="销售日期")
-# create_time = models.DateTimeField(default=datetime.now, verbose_name="创建时间", help_text="创建时间")
-# retail_sales = models.IntegerField(default=0, null=True, blank=True, verbose_name="零售销量", help_text="零售销量")
-# retail_price = models.FloatField(default=0, null=True, blank=True, verbose_name="实际零售金额", help_text="实际零售金额")
-# project_sales = models.IntegerField(default=0, null=True, blank=True, verbose_name="工程销量", help_text="工程销量")
-# project_price = models.FloatField(default=0, null=True, blank=True, verbose_name="实际工程金额", help_text="实际工程金额")
-# wholesale_sales = models.IntegerField(default=0, null=True, blank=True, verbose_name="批发销量", help_text="批发销量")
-# wholesale_price = models.FloatField(default=0, null=True, blank=True, verbose_name="实际批发金额", help_text="实际批发金额")
-# online_sales = models.IntegerField(default=0, null=True, blank=True, verbose_name="电商销量", help_text="电商销量")
-# online_price = models.FloatField(default=0, null=True, blank=True, verbose_name="实际电商金额", help_text="实际电商金额")
-# data_src = models.CharField(default="", max_length=100, null=True, blank=True, verbose_name="数据来源",
-#                             help_text="数据来源")
-# extra = models.TextField(default="", null=True, blank=True, verbose_name="拓展字段", help_text="拓展字段")
-
+            sales_lst.append(sales_dict)
+        data["sales_lst"] = sales_lst
+        retail_sales_list = queryset.values_list('retail_sales',flat=True)
+        retail_price_list = queryset.values_list('retail_price',flat=True)
+        project_sales_list = queryset.values_list('project_sales',flat=True)
+        project_price_list = queryset.values_list('project_price',flat=True)
+        wholesale_sales_list = queryset.values_list('wholesale_sales',flat=True)
+        wholesale_price_list = queryset.values_list('wholesale_price',flat=True)
+        online_sales_list = queryset.values_list('online_sales',flat=True)
+        online_price_list = queryset.values_list('online_price',flat=True)
+        calc_dict = dict(
+            business_calc = Business.objects.count(),
+            store_calc = Store.objects.count(),
+            product_calc = Product.objects.count(),
+            retail_sales_calc = math.fsum(retail_sales_list),
+            retail_price_calc = math.fsum(retail_price_list),
+            project_sales_calc = math.fsum(project_sales_list),
+            project_price_calc = math.fsum(project_price_list),
+            wholesale_sales_calc = math.fsum(wholesale_sales_list),
+            wholesale_price_calc = math.fsum(wholesale_price_list),
+            online_sales_calc = math.fsum(online_sales_list),
+            online_price_calc = math.fsum(online_price_list),
+        )
+        data["calc"] = calc_dict
         return render(request, 'hx/sales_record.html',{"data":data})

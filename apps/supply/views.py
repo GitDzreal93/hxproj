@@ -60,3 +60,40 @@ class UploadSupplyDetailView(View):
                 ).save()
             queryset = list(OrderRecord.objects.all().values())
             return render(request, 'supply_upload.html', {"formlist": data_lst, "querydata": queryset})
+
+
+class SupplyRecordView(View):
+    def get(self, request):
+        queryset = OrderRecord.objects.all()
+        data = {}
+        data["title"] = dict(
+            business_code='商家代码',
+            business_name='商家名称',
+            product_mod='产品型号',
+            order_num='订单号',
+            price='供价',
+            count='要货数量',
+            total_price='要货金额',
+            remark='备注'
+        )
+        order_record_lst = []
+        for order in queryset.values():
+            # 获取商家信息
+            business_code = order.get("business_id")
+            business_query = Business.objects.filter(business_code=business_code).values('business_name')
+            business_name = business_query[0].get("business_name")
+            # 产品型号
+            product_mod = order.get("product_id")
+            order_dict = dict(
+                business_code=business_code,
+                business_name=business_name,
+                product_mod=product_mod,
+                order_num=order.get("order_num"),
+                count=order.get("count"),
+                price=order.get("price"),
+                total_price=order.get("total_price"),
+                remark=order.get("remark"),
+            )
+            order_record_lst.append(order_dict)
+        data["order_lst"] = order_record_lst
+        return render(request, 'hx/supply_record.html', {"data": data})

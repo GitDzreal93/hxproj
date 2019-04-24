@@ -16,7 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from apps.common.views import IndexView
+from rest_framework_swagger.views import get_swagger_view
 import xadmin
+
+schema_view = get_swagger_view(title='海信项目 API')
 
 urlpatterns = [
     # xadmin
@@ -32,4 +35,7 @@ urlpatterns = [
     path('supply/', include('supply.urls')),
     # 存
     path('stock/', include('stock.urls')),
+    # api文档
+    path('docs/', schema_view),
+
 ]

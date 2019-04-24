@@ -7,19 +7,64 @@ from django.shortcuts import render
 from celery_app.tasks import run_test_suit
 from django.views.generic.base import View
 from apps.common.models import Business, Product, Store
+from apps.common.serializer import BusinessSerializer, StoreSerializer, ProductSerializer
+from apps.common.filters import BusinessFilter, StoreFilter, ProductFilter
+from rest_framework import viewsets, filters, pagination
+from django_filters.rest_framework import DjangoFilterBackend
 
 
-def tasks(request):
-    print('before run_test_suit')
-    result = run_test_suit.delay('110')
-    print(result)
-    print('after run_test_suit')
-    return HttpResponse("job is runing background~")
+class PageSet(pagination.PageNumberPagination):
+    page_size = 12
+    page_size_query_param = "size"
+    page_query_param = "page"
+    max_page_size = 100
 
 
 class IndexView(View):
     def get(self, request):
         return render(request, "hx/index.html")
+
+
+class BusinessViewset(viewsets.ModelViewSet):
+    '''
+    商品信息 API
+    '''
+    queryset = Business.objects.all()
+    serializer_class = BusinessSerializer
+    # 设置分页
+    pagination_class = PageSet
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter,)
+    filter_class = BusinessFilter
+    search_fields = ('business_name', 'business_code', 'office', 'company_type')
+    ordering_fields = ('business_name', 'business_code', 'office', 'company_type')
+
+
+class StoreViewset(viewsets.ModelViewSet):
+    '''
+    门店信息 API
+    '''
+    queryset = Store.objects.all()
+    serializer_class = StoreSerializer
+    # 设置分页
+    pagination_class = PageSet
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter,)
+    filter_class = StoreFilter
+    search_fields = ('store_code', 'store_name')
+    ordering_fields = ('business_id', 'store_code', 'store_name')
+
+
+class ProductViewset(viewsets.ModelViewSet):
+    '''
+    产品信息 API
+    '''
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    # 设置分页
+    pagination_class = PageSet
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter,)
+    filter_class = ProductFilter
+    search_fields = ('product_mod', 'product_name')
+    ordering_fields = ('product_mod', 'product_name')
 
 
 class BusinessView(View):
@@ -42,7 +87,7 @@ class BusinessView(View):
             )
             business_lst.append(business_dict)
         data["business_list"] = business_lst
-        return render(request, "hx/business.html",{"data":data})
+        return render(request, "hx/business.html", {"data": data})
 
 
 class StoreView(View):
@@ -68,7 +113,7 @@ class StoreView(View):
             )
             store_lst.append(store_dict)
         data["store_list"] = store_lst
-        return render(request, "hx/store.html",{"data":data})
+        return render(request, "hx/store.html", {"data": data})
 
 
 class ProductView(View):
@@ -90,4 +135,4 @@ class ProductView(View):
             product_lst.append(product_dict)
         data["product_lst"] = product_lst
         print(data)
-        return render(request, "hx/product.html",{"data":data})
+        return render(request, "hx/product.html", {"data": data})
