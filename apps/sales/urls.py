@@ -5,15 +5,17 @@
 # @File    : urls.py
 # @Software: PyCharm
 from django.contrib import admin
-from django.urls import path,include,re_path
+from django.urls import path, include, re_path
 from rest_framework.routers import DefaultRouter
 from .views import *
 
+
 router = DefaultRouter()
 
-#配置sales的api
+# 配置sales的api
+# 1、/sales/api/sales-record 查询销售记录
+# 2、/sales/api/sales-record/sales-calc 销售数据计算器
 router.register('api/sales-record', SalesRecordViewset, base_name="sales_record")
-# router.register('api/sales-calc', SalesCalcViewset, base_name="sales_calc")
 
 urlpatterns = [
     path('sales-upload', UploadSalesDetailView.as_view(), name="sales_upload"),

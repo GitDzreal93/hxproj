@@ -1,16 +1,29 @@
 import math
+import pandas as pd
 
 from django.shortcuts import render
 from django.views.generic.base import View
 from django.http import HttpResponse
 from django.db.utils import IntegrityError
 from django.db.models import Q
+from django_filters.rest_framework import DjangoFilterBackend
+from django.shortcuts import render, HttpResponse
+from django.views.generic.base import View
+from django.db.models import Avg, Count, Sum
+
+from rest_framework import viewsets, filters, mixins
+from rest_framework import status
+from rest_framework.decorators import detail_route, list_route, action
+from rest_framework.response import Response
+
 from .forms import InitDataUploadForm
+from .serializer import StockNowSerializer, StockHistorySerializer
+from .filters import StockNowFilter, StockHistoryFilter
+from apps.common.views import PageSet
 from celery_app.tasks import *
 from apps.stock.models import *
 from apps.supply.models import *
 from apps.sales.models import *
-import pandas as pd
 
 
 # Create your views here.
@@ -56,6 +69,34 @@ class InitDataView(View):
                           {"err": "suceess", "errno": 0, "errmsg": '', "file_table": input_lst, "db_table": output_lst})
 
 
+class StockNowViewset(viewsets.ModelViewSet):
+    '''
+    当前库存记录 API
+    '''
+    queryset = Stock.objects.all()
+    serializer_class = StockNowSerializer
+    # 设置分页
+    pagination_class = PageSet
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter,)
+    filter_class = StockNowFilter
+    search_fields = ('business_id', 'product_id', 'stock_count')
+    ordering_fields = ('business_id', 'product_id', 'stock_count')
+
+
+class StockHistoryViewset(viewsets.ModelViewSet):
+    '''
+    当前库存记录 API
+    '''
+    queryset = StockHistory.objects.all()
+    serializer_class = StockHistorySerializer
+    # 设置分页
+    pagination_class = PageSet
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter,)
+    filter_class = StockHistoryFilter
+    search_fields = ('business_id', 'product_id', 'stock_count', 'record_time')
+    ordering_fields = ('business_id', 'product_id', 'stock_count', 'record_time')
+
+
 class StockNowView(View):
     def get(self, request):
         queryset = Stock.objects.all()
@@ -87,6 +128,7 @@ class StockNowView(View):
             order_record_lst.append(order_dict)
         data["order_lst"] = order_record_lst
         return render(request, 'hx/stock_now.html', {"data": data})
+
 
 # class StockHistoryView(View):
 #     def get(self, request):
@@ -125,10 +167,10 @@ class StockHistoryView(View):
     def get(self, request):
         return render(request, 'hx/stock_history.html')
 
-    # def post(self, request):
-    #     try:
-    #         result = refresh_stock_history.delay()
-    #         print(result)
-    #     except:
-    #         return render(request, 'history_stock.html', {"err": "fail"})
-    #     return render(request, 'history_stock.html', {"err": "suceess"})
+        # def post(self, request):
+        #     try:
+        #         result = refresh_stock_history.delay()
+        #         print(result)
+        #     except:
+        #         return render(request, 'history_stock.html', {"err": "fail"})
+        #     return render(request, 'history_stock.html', {"err": "suceess"})

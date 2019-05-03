@@ -10,7 +10,7 @@ from .models import Business
 from .models import Store
 from .models import Product
 from apps.sales.models import SalesRecord
-from apps.stock.models import Stock
+from apps.stock.models import Stock, StockHistory
 from apps.supply.models import OrderRecord
 
 
@@ -39,7 +39,8 @@ class GlobalSettings(object):
                 {'title': '销量记录', 'url': self.get_model_url(SalesRecord, 'changelist')},
             )},
             {'title': '库存', 'menus': (
-                {'title': '商家库存', 'url': self.get_model_url(Stock, 'changelist')},
+                {'title': '商家当前库存', 'url': self.get_model_url(Stock, 'changelist')},
+                {'title': '商家历史库存', 'url': self.get_model_url(StockHistory, 'changelist')},
             )},
 
         )

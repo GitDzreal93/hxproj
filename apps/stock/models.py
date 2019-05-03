@@ -36,8 +36,8 @@ class StockHistory(models.Model):
     stock_count = models.IntegerField(verbose_name="库存数", help_text="库存数")
     is_init = models.BooleanField(default=False, verbose_name="初始数据", help_text="是否是初始导入的数据")
     # 库存时间
-    record_time = models.DateTimeField(default=datetime.datetime.now, verbose_name="创建时间",
-                                       help_text="创建时间")
+    record_time = models.DateTimeField(default=datetime.datetime.now, verbose_name="库存记录时间",
+                                       help_text="库存记录时间")
     create_time = models.DateTimeField(default=datetime.datetime.now, verbose_name="创建时间", help_text="创建时间")
 
     def __str__(self):

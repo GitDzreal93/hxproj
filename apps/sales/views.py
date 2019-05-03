@@ -115,10 +115,10 @@ class SalesRecordViewset(viewsets.ModelViewSet):
         filter_class = self.filter_class
         f = filter_class(request.GET, queryset=SalesRecord.objects.all())
         qs = f.qs
-        result = dict(
-            business_id = qs.values('business_id').distinct().count(),
-            store_id = qs.values('store_id').distinct().count(),
-            product_id = qs.values('store_id').distinct().count(),
+        calc_result = dict(
+            bussiness_count = qs.values('business_id').distinct().count(),
+            store_count = qs.values('store_id').distinct().count(),
+            product_count = qs.values('store_id').distinct().count(),
             retail_total_sales = qs.aggregate(Sum('retail_sales')).get('retail_sales__sum', 0),
             retail_total_price = qs.aggregate(Sum('retail_price')).get('retail_price__sum', 0),
             project_total_sales = qs.aggregate(Sum('project_sales')).get('project_sales__sum', 0),
@@ -128,7 +128,8 @@ class SalesRecordViewset(viewsets.ModelViewSet):
             online_total_sales = qs.aggregate(Sum('online_sales')).get('online_sales__sum', 0),
             online_total_price = qs.aggregate(Sum('online_price')).get('online_price__sum', 0),
         )
-        return Response(result, status=status.HTTP_200_OK)
+        serializer = SalesCalcSerializer(calc_result)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class SalesRecordView(View):
