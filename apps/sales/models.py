@@ -11,11 +11,14 @@ from apps.common.models import Business
 
 
 class SalesRecord(models.Model):
-    business = models.ForeignKey(Business, to_field="business_code", on_delete=models.CASCADE, verbose_name="商家代码",
+    business = models.ForeignKey(Business, to_field="business_code", related_name="business", on_delete=models.CASCADE,
+                                 verbose_name="商家代码",
                                  help_text="商家代码")
-    store = models.ForeignKey(Store, to_field="store_code", on_delete=models.CASCADE, verbose_name="门店代码",
+    store = models.ForeignKey(Store, to_field="store_code", related_name="store", on_delete=models.CASCADE,
+                              verbose_name="门店代码",
                               help_text="门店代码")
-    product = models.ForeignKey(Product, to_field="product_mod", on_delete=models.CASCADE, verbose_name="产品型号",
+    product = models.ForeignKey(Product, to_field="product_mod", related_name="product", on_delete=models.CASCADE,
+                                verbose_name="产品型号",
                                 help_text="产品型号")
     sales_time = models.DateField(verbose_name="销售日期", help_text="销售日期")
     create_time = models.DateTimeField(default=datetime.now, verbose_name="创建时间", help_text="创建时间")

@@ -4,12 +4,25 @@ import json
 from dateutil.parser import parse
 import pandas as pd
 import math
+from pprint import pprint
 
+from django.db.models import Q
+from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import render, HttpResponse
 from django.views.generic.base import View
+from django.db.models import Avg, Count, Sum
+
+from rest_framework import viewsets, filters, mixins
+from rest_framework import status
+from rest_framework.decorators import detail_route, list_route, action
+from rest_framework.response import Response
+
 from .forms import UploadSalesDetailForm
 from apps.sales.models import SalesRecord
 from apps.common.models import Business, Product, Store
+from apps.common.views import PageSet
+from apps.sales.serializer import SalesRecordSerializer, SalesCalcSerializer
+from apps.sales.filters import SalesRecordFilter
 
 
 class UploadSalesDetailView(View):
@@ -84,6 +97,40 @@ class UploadSalesDetailView(View):
             return render(request, 'sales_upload.html', {"formlist": data_lst, "querydata": queryset})
 
 
+class SalesRecordViewset(viewsets.ModelViewSet):
+    '''
+    销售记录 API
+    '''
+    queryset = SalesRecord.objects.all()
+    serializer_class = SalesRecordSerializer
+    # 设置分页
+    pagination_class = PageSet
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter,)
+    filter_class = SalesRecordFilter
+    search_fields = ('business_id', 'store_id', 'product_id')
+    ordering_fields = ('business_id', 'store_id', 'product_id', 'sales_time')
+
+    @list_route(methods=['get'])
+    def sales_calc(self, request):
+        filter_class = self.filter_class
+        f = filter_class(request.GET, queryset=SalesRecord.objects.all())
+        qs = f.qs
+        result = dict(
+            business_id = qs.values('business_id').distinct().count(),
+            store_id = qs.values('store_id').distinct().count(),
+            product_id = qs.values('store_id').distinct().count(),
+            retail_total_sales = qs.aggregate(Sum('retail_sales')).get('retail_sales__sum', 0),
+            retail_total_price = qs.aggregate(Sum('retail_price')).get('retail_price__sum', 0),
+            project_total_sales = qs.aggregate(Sum('project_sales')).get('project_sales__sum', 0),
+            project_total_price = qs.aggregate(Sum('project_price')).get('project_price__sum', 0),
+            wholesale_total_sales = qs.aggregate(Sum('wholesale_sales')).get('wholesale_sales__sum', 0),
+            wholesale_total_price = qs.aggregate(Sum('wholesale_price')).get('wholesale_price__sum', 0),
+            online_total_sales = qs.aggregate(Sum('online_sales')).get('online_sales__sum', 0),
+            online_total_price = qs.aggregate(Sum('online_price')).get('online_price__sum', 0),
+        )
+        return Response(result, status=status.HTTP_200_OK)
+
+
 class SalesRecordView(View):
     def get(self, request):
         queryset = SalesRecord.objects.all()
@@ -126,26 +173,26 @@ class SalesRecordView(View):
             )
             sales_lst.append(sales_dict)
         data["sales_lst"] = sales_lst
-        retail_sales_list = queryset.values_list('retail_sales',flat=True)
-        retail_price_list = queryset.values_list('retail_price',flat=True)
-        project_sales_list = queryset.values_list('project_sales',flat=True)
-        project_price_list = queryset.values_list('project_price',flat=True)
-        wholesale_sales_list = queryset.values_list('wholesale_sales',flat=True)
-        wholesale_price_list = queryset.values_list('wholesale_price',flat=True)
-        online_sales_list = queryset.values_list('online_sales',flat=True)
-        online_price_list = queryset.values_list('online_price',flat=True)
+        retail_sales_list = queryset.values_list('retail_sales', flat=True)
+        retail_price_list = queryset.values_list('retail_price', flat=True)
+        project_sales_list = queryset.values_list('project_sales', flat=True)
+        project_price_list = queryset.values_list('project_price', flat=True)
+        wholesale_sales_list = queryset.values_list('wholesale_sales', flat=True)
+        wholesale_price_list = queryset.values_list('wholesale_price', flat=True)
+        online_sales_list = queryset.values_list('online_sales', flat=True)
+        online_price_list = queryset.values_list('online_price', flat=True)
         calc_dict = dict(
-            business_calc = Business.objects.count(),
-            store_calc = Store.objects.count(),
-            product_calc = Product.objects.count(),
-            retail_sales_calc = math.fsum(retail_sales_list),
-            retail_price_calc = math.fsum(retail_price_list),
-            project_sales_calc = math.fsum(project_sales_list),
-            project_price_calc = math.fsum(project_price_list),
-            wholesale_sales_calc = math.fsum(wholesale_sales_list),
-            wholesale_price_calc = math.fsum(wholesale_price_list),
-            online_sales_calc = math.fsum(online_sales_list),
-            online_price_calc = math.fsum(online_price_list),
+            business_calc=Business.objects.count(),
+            store_calc=Store.objects.count(),
+            product_calc=Product.objects.count(),
+            retail_sales_calc=math.fsum(retail_sales_list),
+            retail_price_calc=math.fsum(retail_price_list),
+            project_sales_calc=math.fsum(project_sales_list),
+            project_price_calc=math.fsum(project_price_list),
+            wholesale_sales_calc=math.fsum(wholesale_sales_list),
+            wholesale_price_calc=math.fsum(wholesale_price_list),
+            online_sales_calc=math.fsum(online_sales_list),
+            online_price_calc=math.fsum(online_price_list),
         )
         data["calc"] = calc_dict
-        return render(request, 'hx/sales_record.html',{"data":data})
+        return render(request, 'hx/sales_record.html', {"data": data})

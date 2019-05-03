@@ -21,14 +21,14 @@ class StoreFilter(django_filters.rest_framework.FilterSet):
     """
     过滤商家信息
     """
-
-    business_id = django_filters.CharFilter(field_name='business_id', lookup_expr='iexact')
+    business_id = django_filters.CharFilter(field_name='business_id')
     store_name = django_filters.CharFilter(field_name='store_name', lookup_expr='icontains')
     store_code = django_filters.CharFilter(field_name='store_code', lookup_expr='iexact')
 
     class Meta:
         model = Store
         fields = ['business_id', 'store_name', 'store_code']
+        # fields = ['business_id', 'store_name', 'store_code']
 
 
 class ProductFilter(django_filters.rest_framework.FilterSet):

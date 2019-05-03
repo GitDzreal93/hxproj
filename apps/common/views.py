@@ -17,7 +17,7 @@ class PageSet(pagination.PageNumberPagination):
     page_size = 12
     page_size_query_param = "size"
     page_query_param = "page"
-    max_page_size = 100
+    max_page_size = 300
 
 
 class IndexView(View):
