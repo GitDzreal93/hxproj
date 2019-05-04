@@ -11,7 +11,7 @@ from .models import Store
 from .models import Product
 from apps.sales.models import SalesRecord
 from apps.stock.models import Stock, StockHistory
-from apps.supply.models import OrderRecord
+from apps.supply.models import SupplyRecord
 
 
 class BaseSetting(object):
@@ -33,7 +33,7 @@ class GlobalSettings(object):
                 {'title': '产品', 'url': self.get_model_url(Product, 'changelist')},
             )},
             {'title': '供货', 'menus': (
-                {'title': '供货记录', 'url': self.get_model_url(OrderRecord, 'changelist')},
+                {'title': '供货记录', 'url': self.get_model_url(SupplyRecord, 'changelist')},
             )},
             {'title': '销量', 'menus': (
                 {'title': '销量记录', 'url': self.get_model_url(SalesRecord, 'changelist')},
