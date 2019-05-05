@@ -122,4 +122,4 @@ class SupplyRecordView(View):
             )
             order_record_lst.append(order_dict)
         data["order_lst"] = order_record_lst
-        return render(request, 'hx/supply_record.html', {"data": data})
+        return render(request, 'hx/supply_record_bak.html', {"data": data})

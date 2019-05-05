@@ -16,11 +16,12 @@ class Business(models.Model):
                                     help_text="公司分类")
     is_delete = models.BooleanField(default=False, verbose_name="是否删除", help_text="是否删除")
     is_init = models.BooleanField(default=False, verbose_name="初始数据", help_text="是否是初始导入的数据")
-    create_time = models.DateTimeField(default=datetime.now, verbose_name="创建时间", help_text="创建时间")
-    modify_time = models.DateTimeField(default=datetime.now, verbose_name="修改时间", help_text="修改时间")
+    create_time = models.DateTimeField(default=datetime.now, verbose_name="创建时间", help_text="创建时间", null=True,
+                                       blank=True)
+    modify_time = models.DateTimeField(default=datetime.now, verbose_name="修改时间", help_text="修改时间", null=True,
+                                       blank=True)
 
     def __str__(self):
-        # return self.business_name + '({})'.format(self.business_code)
         return self.business_name
 
     class Meta:
@@ -30,14 +31,17 @@ class Business(models.Model):
 
 
 class Store(models.Model):
-    business = models.ForeignKey(Business, to_field="business_code", on_delete=models.CASCADE, verbose_name="商家代码",
+    business = models.ForeignKey(Business, to_field="business_code", on_delete=models.CASCADE,
+                                 verbose_name="商家代码",
                                  help_text="商家代码")
     store_code = models.CharField(unique=True, primary_key=True, max_length=20, verbose_name="门店代码",
                                   help_text="门店代码")
     store_name = models.CharField(unique=True, max_length=100, verbose_name="门店名称", help_text="门店名称")
     is_delete = models.BooleanField(default=False, verbose_name="是否删除", help_text="是否删除")
-    create_time = models.DateTimeField(default=datetime.now, verbose_name="创建时间", help_text="创建时间")
-    modify_time = models.DateTimeField(default=datetime.now, verbose_name="更新时间", help_text="更新时间")
+    create_time = models.DateTimeField(default=datetime.now, verbose_name="创建时间", help_text="创建时间", null=True,
+                                       blank=True)
+    modify_time = models.DateTimeField(default=datetime.now, verbose_name="更新时间", help_text="更新时间", null=True,
+                                       blank=True)
 
     def __str__(self):
         return self.store_name
@@ -55,8 +59,10 @@ class Product(models.Model):
     specifications = models.TextField(default='', null=True, blank=True, verbose_name="规格", help_text="规格")
     is_delete = models.BooleanField(default=False, verbose_name="是否删除", help_text="是否删除")
     is_init = models.BooleanField(default=False, verbose_name="初始数据", help_text="是否是初始导入的数据")
-    create_time = models.DateTimeField(default=datetime.now, verbose_name="创建时间", help_text="创建时间")
-    modify_time = models.DateTimeField(default=datetime.now, verbose_name="更新时间", help_text="更新时间")
+    create_time = models.DateTimeField(default=datetime.now, verbose_name="创建时间", help_text="创建时间", null=True,
+                                       blank=True)
+    modify_time = models.DateTimeField(default=datetime.now, verbose_name="更新时间", help_text="更新时间", null=True,
+                                       blank=True)
 
     def __str__(self):
         return self.product_mod

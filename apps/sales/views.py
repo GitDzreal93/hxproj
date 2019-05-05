@@ -27,7 +27,7 @@ from apps.sales.filters import SalesRecordFilter
 
 class UploadSalesDetailView(View):
     def get(self, request):
-        return render(request, 'sales_upload.html')
+        return render(request, 'hx/sales_upload.html')
 
     def post(self, request):
         '''导入供货信息'''
@@ -116,17 +116,17 @@ class SalesRecordViewset(viewsets.ModelViewSet):
         f = filter_class(request.GET, queryset=SalesRecord.objects.all())
         qs = f.qs
         calc_result = dict(
-            bussiness_count = qs.values('business_id').distinct().count(),
-            store_count = qs.values('store_id').distinct().count(),
-            product_count = qs.values('store_id').distinct().count(),
-            retail_total_sales = qs.aggregate(Sum('retail_sales')).get('retail_sales__sum', 0),
-            retail_total_price = qs.aggregate(Sum('retail_price')).get('retail_price__sum', 0),
-            project_total_sales = qs.aggregate(Sum('project_sales')).get('project_sales__sum', 0),
-            project_total_price = qs.aggregate(Sum('project_price')).get('project_price__sum', 0),
-            wholesale_total_sales = qs.aggregate(Sum('wholesale_sales')).get('wholesale_sales__sum', 0),
-            wholesale_total_price = qs.aggregate(Sum('wholesale_price')).get('wholesale_price__sum', 0),
-            online_total_sales = qs.aggregate(Sum('online_sales')).get('online_sales__sum', 0),
-            online_total_price = qs.aggregate(Sum('online_price')).get('online_price__sum', 0),
+            bussiness_count=qs.values('business_id').distinct().count(),
+            store_count=qs.values('store_id').distinct().count(),
+            product_count=qs.values('store_id').distinct().count(),
+            retail_total_sales=qs.aggregate(Sum('retail_sales')).get('retail_sales__sum', 0),
+            retail_total_price=qs.aggregate(Sum('retail_price')).get('retail_price__sum', 0),
+            project_total_sales=qs.aggregate(Sum('project_sales')).get('project_sales__sum', 0),
+            project_total_price=qs.aggregate(Sum('project_price')).get('project_price__sum', 0),
+            wholesale_total_sales=qs.aggregate(Sum('wholesale_sales')).get('wholesale_sales__sum', 0),
+            wholesale_total_price=qs.aggregate(Sum('wholesale_price')).get('wholesale_price__sum', 0),
+            online_total_sales=qs.aggregate(Sum('online_sales')).get('online_sales__sum', 0),
+            online_total_price=qs.aggregate(Sum('online_price')).get('online_price__sum', 0),
         )
         serializer = SalesCalcSerializer(calc_result)
         return Response(serializer.data, status=status.HTTP_200_OK)

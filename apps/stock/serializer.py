@@ -2,6 +2,7 @@
 import json
 
 from rest_framework import serializers
+from drf_writable_nested import WritableNestedModelSerializer
 
 from pprint import pprint
 from django.db.models import Q
@@ -12,7 +13,7 @@ from apps.common.serializer import ProductSerializer
 from apps.common.serializer import StoreSerializer
 
 
-class StockNowSerializer(serializers.ModelSerializer):
+class StockNowSerializer(WritableNestedModelSerializer):
     business = BusinessSerializer()
     product = ProductSerializer()
 
@@ -21,7 +22,7 @@ class StockNowSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class StockHistorySerializer(serializers.ModelSerializer):
+class StockHistorySerializer(WritableNestedModelSerializer):
     business = BusinessSerializer()
     product = ProductSerializer()
 

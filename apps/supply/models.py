@@ -18,7 +18,8 @@ class SupplyRecord(models.Model):
     price = models.FloatField(verbose_name="供价", help_text="供价")
     total_price = models.FloatField(verbose_name="供货总价", help_text="供货总价")
     remarks = models.TextField(default='', null=True, blank=True, verbose_name="备注", help_text="备注")
-    create_time = models.DateTimeField(default=datetime.now, verbose_name="创建时间", help_text="创建时间")
+    create_time = models.DateTimeField(default=datetime.now, verbose_name="创建时间", help_text="创建时间", null=True,
+                                       blank=True)
 
     def __str__(self):
         return self.order_id

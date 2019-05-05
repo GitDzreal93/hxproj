@@ -11,17 +11,19 @@ from apps.common.models import Business
 
 
 class SalesRecord(models.Model):
-    business = models.ForeignKey(Business, to_field="business_code", related_name="business", on_delete=models.CASCADE,
+    business = models.ForeignKey(Business, to_field="business_code", related_name="sales_business",
+                                 on_delete=models.CASCADE,
                                  verbose_name="商家代码",
                                  help_text="商家代码")
-    store = models.ForeignKey(Store, to_field="store_code", related_name="store", on_delete=models.CASCADE,
+    store = models.ForeignKey(Store, to_field="store_code", related_name="sales_store", on_delete=models.CASCADE,
                               verbose_name="门店代码",
                               help_text="门店代码")
-    product = models.ForeignKey(Product, to_field="product_mod", related_name="product", on_delete=models.CASCADE,
+    product = models.ForeignKey(Product, to_field="product_mod", related_name="sales_product", on_delete=models.CASCADE,
                                 verbose_name="产品型号",
                                 help_text="产品型号")
-    sales_time = models.DateField(verbose_name="销售日期", help_text="销售日期")
-    create_time = models.DateTimeField(default=datetime.now, verbose_name="创建时间", help_text="创建时间")
+    sales_date = models.DateField(verbose_name="销售日期", help_text="销售日期")
+    create_time = models.DateTimeField(default=datetime.now, verbose_name="创建时间", help_text="创建时间", null=True,
+                                       blank=True)
     retail_sales = models.IntegerField(default=0, null=True, blank=True, verbose_name="零售销量", help_text="零售销量")
     retail_price = models.FloatField(default=0, null=True, blank=True, verbose_name="实际零售金额", help_text="实际零售金额")
     project_sales = models.IntegerField(default=0, null=True, blank=True, verbose_name="工程销量", help_text="工程销量")

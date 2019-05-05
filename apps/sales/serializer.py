@@ -1,7 +1,11 @@
 # -*- coding:utf-8 -*-
 import json
+import pandas as pd
+from pprint import pprint
+from dateutil.parser import parse
 
 from rest_framework import serializers
+from drf_writable_nested import WritableNestedModelSerializer
 
 from pprint import pprint
 from django.db.models import Q
@@ -10,7 +14,6 @@ from apps.sales.models import SalesRecord
 from apps.common.serializer import BusinessSerializer
 from apps.common.serializer import ProductSerializer
 from apps.common.serializer import StoreSerializer
-
 
 class SalesCalcSerializer(serializers.Serializer):
     bussiness_count = serializers.IntegerField(label="商家总数")
@@ -26,7 +29,7 @@ class SalesCalcSerializer(serializers.Serializer):
     online_total_price = serializers.FloatField(label="实际电商总额")
 
 
-class SalesRecordSerializer(serializers.ModelSerializer):
+class SalesRecordSerializer(WritableNestedModelSerializer):
     business = BusinessSerializer()
     product = ProductSerializer()
     store = StoreSerializer()
@@ -34,4 +37,4 @@ class SalesRecordSerializer(serializers.ModelSerializer):
     class Meta:
         model = SalesRecord
         fields = "__all__"
-        # fields = ("business","product","store",)
+        depth = 1
