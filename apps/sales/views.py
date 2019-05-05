@@ -174,14 +174,15 @@ class SalesRecordView(View):
             )
             sales_lst.append(sales_dict)
         data["sales_lst"] = sales_lst
-        retail_sales_list = queryset.values_list('retail_sales', flat=True)
-        retail_price_list = queryset.values_list('retail_price', flat=True)
-        project_sales_list = queryset.values_list('project_sales', flat=True)
-        project_price_list = queryset.values_list('project_price', flat=True)
-        wholesale_sales_list = queryset.values_list('wholesale_sales', flat=True)
-        wholesale_price_list = queryset.values_list('wholesale_price', flat=True)
-        online_sales_list = queryset.values_list('online_sales', flat=True)
-        online_price_list = queryset.values_list('online_price', flat=True)
+        retail_sales_list = queryset.values_list('retail_sales', flat=True) if queryset.values_list('retail_sales', flat=True) else 0
+        retail_price_list = queryset.values_list('retail_price', flat=True) if queryset.values_list('retail_price', flat=True) else 0
+        project_sales_list = queryset.values_list('project_sales', flat=True) if queryset.values_list('project_sales', flat=True) else 0
+        project_price_list = queryset.values_list('project_price', flat=True) if queryset.values_list('project_price', flat=True) else 0
+        wholesale_sales_list = queryset.values_list('wholesale_sales', flat=True) if queryset.values_list('wholesale_sales', flat=True) else 0
+        wholesale_price_list = queryset.values_list('wholesale_price', flat=True) if queryset.values_list('wholesale_price', flat=True) else 0
+        online_sales_list = queryset.values_list('online_sales', flat=True) if queryset.values_list('online_sales', flat=True) else 0
+        online_price_list = queryset.values_list('online_price', flat=True) if queryset.values_list('online_price', flat=True) else 0
+        print(retail_sales_list)
         calc_dict = dict(
             business_calc=Business.objects.count(),
             store_calc=Store.objects.count(),

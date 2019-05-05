@@ -6,8 +6,8 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from celery_app.tasks import run_test_suit
 from django.views.generic.base import View
-from apps.common.models import Business, Product, Store
-from apps.common.serializer import BusinessSerializer, StoreSerializer, ProductSerializer
+from apps.common.models import Business, Product, Store, UploadFile
+from apps.common.serializer import BusinessSerializer, StoreSerializer, ProductSerializer, UploadFileSerializer
 from apps.common.filters import BusinessFilter, StoreFilter, ProductFilter
 from rest_framework import viewsets, filters, pagination
 from django_filters.rest_framework import DjangoFilterBackend
@@ -65,6 +65,14 @@ class ProductViewset(viewsets.ModelViewSet):
     filter_class = ProductFilter
     search_fields = ('product_mod', 'product_name')
     ordering_fields = ('product_mod', 'product_name')
+
+
+class UploadFileViewset(viewsets.ModelViewSet):
+    '''
+    上传文件 API
+    '''
+    queryset = UploadFile.objects.all()
+    serializer_class = UploadFileSerializer
 
 
 class BusinessView(View):

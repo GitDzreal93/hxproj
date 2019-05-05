@@ -12,7 +12,7 @@ from .views import *
 router = DefaultRouter()
 
 # 配置supply的api
-router.register('api/supply-record', SupplyRecordViewset, base_name="supply_record")
+router.register('api/supply-record', SupplyRecordViewset, base_name="supply_record_api")
 
 # urlpatterns 主要用于渲染html，所有数据交互全部交给drf
 urlpatterns = [

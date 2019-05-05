@@ -14,8 +14,8 @@ router = DefaultRouter()
 
 # 配置sales的api
 # 1、/stock/api/stock-now 查询当前库存记录
-router.register('api/stock-now', StockNowViewset, base_name="stock_now")
-router.register('api/stock-history', StockHistoryViewset, base_name="stock_history")
+router.register('api/stock-now', StockNowViewset, base_name="stock_now_api")
+router.register('api/stock-history', StockHistoryViewset, base_name="stock_history_api")
 
 urlpatterns = [
     path('init-upload/', InitDataView.as_view(), name="init_upload"),

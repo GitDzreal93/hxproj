@@ -15,6 +15,7 @@ router = DefaultRouter()
 router.register('api/business', BusinessViewset, base_name="business_api")
 router.register('api/store', StoreViewset, base_name="store_api")
 router.register('api/product', ProductViewset, base_name="product_api")
+router.register('api/upload-file', UploadFileViewset, base_name="upload_file_api")
 
 urlpatterns = [
     path('business', BusinessView.as_view(), name='business'),

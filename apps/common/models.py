@@ -1,4 +1,5 @@
 # _*_ encoding:utf-8 _*_
+from pprint import pprint
 from datetime import datetime
 
 from django.db import models
@@ -70,4 +71,22 @@ class Product(models.Model):
     class Meta:
         db_table = "tb_product"
         verbose_name = "产品"
+        verbose_name_plural = verbose_name
+
+
+# 生成上传的文件名
+def file_directory_path(instance, filename):
+    last_id = UploadFile.objects.order_by('id').last().id
+    new_id = last_id + 1
+    return 'upload/{0}_{1}_{2}'.format(new_id, datetime.date(datetime.now()), filename)
+
+
+class UploadFile(models.Model):
+    file_path = models.FileField(verbose_name="上传文件路径", help_text="上传文件路径", upload_to=file_directory_path)
+    create_time = models.DateTimeField(default=datetime.now, verbose_name="创建时间", help_text="创建时间",
+                                       blank=True)
+
+    class Meta:
+        db_table = "tb_upload_file"
+        verbose_name = "上传文件"
         verbose_name_plural = verbose_name
