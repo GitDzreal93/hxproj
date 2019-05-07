@@ -177,6 +177,8 @@ STATICFILES_DIRS = (
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+UPLOAD_ROOT = os.path.join(MEDIA_ROOT, 'upload')
+
 
 EMAIL_HOST = "smtp.126.com"
 EMAIL_PORT = 25
@@ -222,3 +224,8 @@ CELERYBEAT_SCHEDULE = {
 #     'MARGIN_PAGES_DISPLAYED': 2,
 #     'SHOW_FIRST_PAGE_WHEN_INVALID': True,
 # }
+
+# 上传文件配置
+SALES_SHEET = '销售数据导入'
+INIT_SHEET = '初期库存导入'
+SUPPLY_SHEET = '发货数据导入'
