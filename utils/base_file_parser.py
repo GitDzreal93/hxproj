@@ -12,10 +12,9 @@ sys.path.append(pwd + "../")
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "hxproj.settings")
 from hxproj import settings
 
-from apps.common.serializer import UploadFileSerializer,BusinessSerializer,ProductSerializer
-from apps.supply.serializer import SupplyRecordSerializer
+from apps.common.serializer import UploadFileSerializer, BusinessSerializer, ProductSerializer,StoreSerializer
 from apps.sales.serializer import SalesRecordSerializer
-from apps.stock.serializer import StockHistorySerializer,StoreSerializer
+from apps.stock.serializer import StockNowSerializer
 from apps.supply.serializer import SupplyRecordSerializer
 
 
@@ -29,8 +28,10 @@ class BaseFileParser(metaclass=abc.ABCMeta):
 
     def read_file(self):
         df = pd.read_excel(self.file_path, sheet_name=self.sheet_name)
+        pprint(df)
         df.fillna("", inplace=True)
         data_lst = df.to_dict(orient='records')
+        pprint(data_lst)
         return data_lst
 
     def get_data(self):
@@ -50,23 +51,23 @@ class SalesFileParser(BaseFileParser):
         output = []
         for input_item in input:
             # 格式化时间
-            sales_date=input_item.get("时间")
+            sales_date = input_item.get("时间")
             sales_date = sales_date.date()
             # 生成存储字典
             output_dict = dict(
-                business = dict(
+                business=dict(
                     business_code=input_item.get("商家代码"),
                     business_name=input_item.get("商家名称"),
                 ),
-                store = dict(
+                store=dict(
                     store_code=input_item.get("门店代码"),
                     store_name=input_item.get("门店名称"),
-                    business = dict(
+                    business=dict(
                         business_code=input_item.get("商家代码"),
                         business_name=input_item.get("商家名称"),
                     )
                 ),
-                product = dict(
+                product=dict(
                     product_mod=input_item.get("型号"),
                 ),
                 sales_date=sales_date,
@@ -90,28 +91,29 @@ class SalesFileParser(BaseFileParser):
             sales_record_serializer.save()
             print("插入销量数据成功")
 
+
 class SupplyFileParser(BaseFileParser):
     def parse(self, input):
         output = []
         for input_item in input:
             # 格式化时间
-            order_date=input_item.get("发货日期")
+            order_date = input_item.get("发货日期")
             order_date = order_date.date()
             # 生成存储字典
             output_dict = dict(
-                business = dict(
+                business=dict(
                     business_code=input_item.get("商家代码"),
                     business_name=input_item.get("商家名称")
                 ),
-                product = dict(
+                product=dict(
                     product_mod=input_item.get("型号")
                 ),
-                count = input_item.get("要货数量"),
-                price = input_item.get("供价"),
-                total_price = input_item.get("要货金额"),
-                order_id = input_item.get("订单号"),
-                order_date = order_date,
-                remarks = input_item.get("备注")
+                count=input_item.get("要货数量"),
+                price=input_item.get("供价"),
+                total_price=input_item.get("要货金额"),
+                order_id=input_item.get("订单号"),
+                order_date=order_date,
+                remarks=input_item.get("备注")
             )
             output.append(output_dict)
         return output
@@ -123,3 +125,30 @@ class SupplyFileParser(BaseFileParser):
             supply_record_serializer.save()
             print("插入要货数据成功")
 
+
+class InitFileParser(BaseFileParser):
+    def parse(self, input):
+        output = []
+        for input_item in input:
+            # 生成存储字典
+            output_dict = dict(
+                business=dict(
+                    business_code=input_item.get("商家代码"),
+                    business_name=input_item.get("商家名称")
+                ),
+                product=dict(
+                    product_mod=input_item.get("机型")
+                ),
+                stock_count=input_item.get("数量"),
+                remarks=input_item.get("备注"),
+                is_init=True
+            )
+            output.append(output_dict)
+        return output
+
+    def save_db(self, parse_data):
+        for i in parse_data:
+            stock_record_serializer = StockNowSerializer(data=i)
+            stock_record_serializer.is_valid(raise_exception=True)
+            stock_record_serializer.save()
+            print("插入初始数据成功")

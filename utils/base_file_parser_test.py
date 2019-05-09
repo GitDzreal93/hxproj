@@ -27,7 +27,7 @@ from hxproj import settings
 from apps.common.serializer import UploadFileSerializer,BusinessSerializer,ProductSerializer
 from apps.supply.serializer import SupplyRecordSerializer
 from apps.sales.serializer import SalesRecordSerializer
-from apps.stock.serializer import StockHistorySerializer,StoreSerializer
+from apps.stock.serializer import StockHistorySerializer,StockNowSerializer
 from apps.supply.serializer import SupplyRecordSerializer
 
 # UPLOAD_DIR = os.path.join(settings.MEDIA_ROOT, 'upload')
@@ -138,25 +138,59 @@ class SupplyFileParser(BaseFileParser):
             supply_record_serializer.save()
             print("插入要货数据成功")
 
+class InitFileParser(BaseFileParser):
+    def parse(self, input):
+        output = []
+        for input_item in input:
+            # 生成存储字典
+            output_dict = dict(
+                business=dict(
+                    business_code=input_item.get("商家代码"),
+                    business_name=input_item.get("商家名称")
+                ),
+                product=dict(
+                    product_mod=input_item.get("机型")
+                ),
+                stock_count=input_item.get("数量"),
+                remarks=input_item.get("备注"),
+                is_init=True
+            )
+            output.append(output_dict)
+        return output
+
+    def save_db(self, parse_data):
+        for i in parse_data:
+            stock_record_serializer = StockNowSerializer(data=i)
+            stock_record_serializer.is_valid(raise_exception=True)
+            stock_record_serializer.save()
+            print("插入初始数据成功")
+
 
 
 if __name__ == '__main__':
     # file_path = 'media/upload/16_2019-05-06_进存销格式.xlsx'
     # media/upload/16_2019-05-06_进销存格式.xlsx
     UPLOAD_DIR = settings.UPLOAD_ROOT
-    file_path = os.path.join(UPLOAD_DIR, '16_2019-05-06_进销存格式.xlsx')
+    file_path = os.path.join(UPLOAD_DIR, '26_2019-05-09_进销存格式销售记录.xlsx')
 
     # sheet_name = "销售数据导入"
     # sales_parser = SalesFileParser(name='sales', file_path=file_path, sheet_name=sheet_name)
     # data_input = sales_parser.get_data()
     # parse_data = sales_parser.parse(data_input)
+    # print(parse_data)
     # sales_parser.save_db(parse_data)
 
-    sheet_name = "发货数据导入"
-    supply_parser = SupplyFileParser(name='supply', file_path=file_path, sheet_name=sheet_name)
-    data_input = supply_parser.get_data()
-    parse_data = supply_parser.parse(data_input)
-    supply_parser.save_db(parse_data)
+    # sheet_name = "发货数据导入"
+    # supply_parser = SupplyFileParser(name='supply', file_path=file_path, sheet_name=sheet_name)
+    # data_input = supply_parser.get_data()
+    # parse_data = supply_parser.parse(data_input)
+    # supply_parser.save_db(parse_data)
+
+    sheet_name = "初期库存导入"
+    init_parser = InitFileParser(name='init_stock', file_path=file_path, sheet_name=sheet_name)
+    init_input_data = init_parser.get_data()
+    init_parse_data = init_parser.parse(init_input_data)
+    init_parser.save_db(init_parse_data)
 
 # df = pd.read_excel(f, sheet_name="销售数据导入")
 # df.fillna("", inplace=True)

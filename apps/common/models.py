@@ -76,8 +76,11 @@ class Product(models.Model):
 
 # 生成上传的文件名
 def file_directory_path(instance, filename):
-    last_id = UploadFile.objects.order_by('id').last().id
-    new_id = last_id + 1
+    if UploadFile.objects.order_by('id').last():
+        last_id = UploadFile.objects.order_by('id').last().id
+        new_id = last_id + 1
+    else:
+        new_id = 0
     return 'upload/{0}_{1}_{2}'.format(new_id, datetime.date(datetime.now()), filename)
 
 

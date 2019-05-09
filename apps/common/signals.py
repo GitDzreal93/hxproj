@@ -30,7 +30,7 @@ from apps.supply.serializer import SupplyRecordSerializer
 from apps.sales.serializer import SalesRecordSerializer
 from apps.stock.serializer import StockHistorySerializer, StoreSerializer
 from apps.supply.serializer import SupplyRecordSerializer
-from utils.base_file_parser import SalesFileParser, SupplyFileParser
+from utils.base_file_parser import SalesFileParser, SupplyFileParser,InitFileParser
 
 
 # from utils import
@@ -39,21 +39,26 @@ from utils.base_file_parser import SalesFileParser, SupplyFileParser
 @receiver(post_save, sender=UploadFile)
 def callback_calc_stock(sender, instance=None, created=False, **kwargs):
     print("开始读取文件，并存入库存--")
-    UPLOAD_ROOT = settings.UPLOAD_ROOT
     INIT_SHEET = settings.INIT_SHEET
     SALES_SHEET = settings.SALES_SHEET
     SUPPLY_SHEET = settings.SUPPLY_SHEET
     file_path = instance.file_path
+    # 存储初始化记录的数据
+    init_parser = InitFileParser(name='init_stock', file_path=file_path, sheet_name=INIT_SHEET)
+    init_input_data = init_parser.get_data()
+    init_parse_data = init_parser.parse(init_input_data)
+    init_parser.save_db(init_parse_data)
+    print("1")
     # 存储销量记录的数据
     sales_parser = SalesFileParser(name='sales', file_path=file_path, sheet_name=SALES_SHEET)
     sales_input_data = sales_parser.get_data()
     sales_parse_data = sales_parser.parse(sales_input_data)
     sales_parser.save_db(sales_parse_data)
+    print("2")
     # 存储供货记录的数据
     supply_parser = SupplyFileParser(name='supply', file_path=file_path, sheet_name=SUPPLY_SHEET)
     supply_input_data = supply_parser.get_data()
-    suppy_parse_data = supply_input_data.parse(supply_input_data)
+    suppy_parse_data = supply_parser.parse(supply_input_data)
     supply_parser.save_db(suppy_parse_data)
-    # 存储初始化记录的数据
-    print(file_path)
+    print("3")
     return None

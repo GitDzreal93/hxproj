@@ -30,6 +30,7 @@ class Stock(models.Model):
         db_table = "tb_stock"
         verbose_name = "库存"
         verbose_name_plural = verbose_name
+        unique_together=("business","product")
 
 
 class StockHistory(models.Model):

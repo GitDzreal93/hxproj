@@ -21,6 +21,25 @@ class StockNowSerializer(WritableNestedModelSerializer):
         model = Stock
         fields = "__all__"
 
+    def create(self, validated_data):
+        business_id = validated_data["business"]["business_code"]
+        product_id = validated_data["product"]["product_mod"]
+        stock_count = validated_data["stock_count"]
+        existed = Stock.objects.filter(business_id=business_id, product_id=product_id)
+        if existed:
+            existed = existed[0]
+            existed.stock_count = stock_count
+            existed.save()
+        else:
+            existed = Stock.objects.create(**validated_data)
+        return existed
+
+    def update(self, instance, validated_data):
+        #更新库存数量
+        instance.stock_count = validated_data["stock_count"]
+        instance.save()
+        return instance
+
 
 class StockHistorySerializer(WritableNestedModelSerializer):
     business = BusinessSerializer()
