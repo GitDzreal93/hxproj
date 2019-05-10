@@ -4,12 +4,13 @@ import pandas as pd
 # Create your views here.
 from django.http import HttpResponse
 from django.shortcuts import render
+from rest_framework import viewsets, filters, pagination
+from rest_framework.renderers import TemplateHTMLRenderer
 from celery_app.tasks import run_test_suit
 from django.views.generic.base import View
 from apps.common.models import Business, Product, Store, UploadFile
 from apps.common.serializer import BusinessSerializer, StoreSerializer, ProductSerializer, UploadFileSerializer
 from apps.common.filters import BusinessFilter, StoreFilter, ProductFilter
-from rest_framework import viewsets, filters, pagination
 from django_filters.rest_framework import DjangoFilterBackend
 
 
@@ -37,6 +38,8 @@ class BusinessViewset(viewsets.ModelViewSet):
     filter_class = BusinessFilter
     search_fields = ('business_name', 'business_code', 'office', 'company_type')
     ordering_fields = ('business_name', 'business_code', 'office', 'company_type')
+    # renderer_classes = [TemplateHTMLRenderer]
+    # template_name = 'hx/business.html'
 
 
 class StoreViewset(viewsets.ModelViewSet):
@@ -76,6 +79,10 @@ class UploadFileViewset(viewsets.ModelViewSet):
 
 
 class BusinessView(View):
+    def get(self, request):
+        return render(request, "hx/business.html")
+
+class BusinessViewOld(View):
     def get(self, request):
         queryset = Business.objects.all()
         data = {}

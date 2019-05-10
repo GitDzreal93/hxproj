@@ -118,4 +118,16 @@
 	<script src="/static/vendors/jszip/dist/jszip.min.js"></script>
 	<script src="/static/vendors/pdfmake/build/pdfmake.min.js"></script>
 	<script src="/static/vendors/pdfmake/build/vfs_fonts.js"></script>
+	<script>
+{#	 $(document).ready(function(){#}
+{#                alert("aa");#}
+{#            });#}
+		$(document).ready(function(){
+			console.log("hahahah");
+			 $.get("http://127.0.0.1:8000/common/api/business/",function(data,status){
+				alert("Data: " + data + "\nStatus: " + status);
+			 	console.log(data);
+			});
+		})
+	</script>
 {% endblock javascripts %}

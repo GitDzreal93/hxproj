@@ -218,13 +218,6 @@ CELERYBEAT_SCHEDULE = {
 
 }
 
-# 分页配置
-# PAGINATION_SETTINGS = {
-#     'PAGE_RANGE_DISPLAYED': 10,
-#     'MARGIN_PAGES_DISPLAYED': 2,
-#     'SHOW_FIRST_PAGE_WHEN_INVALID': True,
-# }
-
 # 上传文件配置
 SALES_SHEET = '销售数据导入'
 INIT_SHEET = '初期库存导入'
