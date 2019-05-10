@@ -12,11 +12,18 @@ sys.path.append(pwd + "../")
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "hxproj.settings")
 from hxproj import settings
 
-from apps.common.serializer import UploadFileSerializer, BusinessSerializer, ProductSerializer,StoreSerializer
+from apps.common.serializer import UploadFileSerializer, BusinessSerializer, ProductSerializer, StoreSerializer
+from apps.stock.models import Stock
 from apps.sales.serializer import SalesRecordSerializer
 from apps.stock.serializer import StockNowSerializer
 from apps.supply.serializer import SupplyRecordSerializer
 
+
+# def update_stock_db(da):
+#     data =
+#     stock_record_serializer = StockNowSerializer(data)
+#     stock_record_serializer.is_valid(raise_exception=True)
+#     stock_record_serializer.save()
 
 class BaseFileParser(metaclass=abc.ABCMeta):
     def __init__(self, name=None, model_name=None, file_path=None, sheet_name=None, **kwargs):
@@ -28,10 +35,10 @@ class BaseFileParser(metaclass=abc.ABCMeta):
 
     def read_file(self):
         df = pd.read_excel(self.file_path, sheet_name=self.sheet_name)
-        pprint(df)
+        # pprint(df)
         df.fillna("", inplace=True)
         data_lst = df.to_dict(orient='records')
-        pprint(data_lst)
+        # pprint(data_lst)
         return data_lst
 
     def get_data(self):
@@ -86,10 +93,16 @@ class SalesFileParser(BaseFileParser):
 
     def save_db(self, parse_data):
         for i in parse_data:
+            # 存销量记录
             sales_record_serializer = SalesRecordSerializer(data=i)
             sales_record_serializer.is_valid(raise_exception=True)
             sales_record_serializer.save()
-            print("插入销量数据成功")
+            # 更新库存库,最新库存 = 当前库存 - 销量
+            now_stock = Stock.objects.filter(business_id=i["business"]["business_code"])
+            if now_stock:
+                now_stock_count = now_stock.values("stock_count")[0].get("stock_count")
+                now_stock_count = now_stock_count - (i.get("retail_sales",0) + i.get("project_sales",0) + i.get("wholesale_sales",0) + i.get("online_sales",0))
+                now_stock.update(stock_count=now_stock_count)
 
 
 class SupplyFileParser(BaseFileParser):
@@ -123,7 +136,12 @@ class SupplyFileParser(BaseFileParser):
             supply_record_serializer = SupplyRecordSerializer(data=i)
             supply_record_serializer.is_valid(raise_exception=True)
             supply_record_serializer.save()
-            print("插入要货数据成功")
+            # 更新库存库,最新库存 = 当前库存 + 供货量
+            now_stock = Stock.objects.filter(business_id=i["business"]["business_code"])
+            if now_stock:
+                now_stock_count = now_stock.values("stock_count")[0].get("stock_count")
+                now_stock_count = now_stock_count + i.get("count",0)
+                now_stock.update(stock_count=now_stock_count)
 
 
 class InitFileParser(BaseFileParser):
@@ -151,4 +169,3 @@ class InitFileParser(BaseFileParser):
             stock_record_serializer = StockNowSerializer(data=i)
             stock_record_serializer.is_valid(raise_exception=True)
             stock_record_serializer.save()
-            print("插入初始数据成功")
