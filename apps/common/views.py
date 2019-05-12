@@ -5,20 +5,58 @@ import pandas as pd
 from django.http import HttpResponse
 from django.shortcuts import render
 from rest_framework import viewsets, filters, pagination
+from rest_framework.response import Response
+from collections import OrderedDict, namedtuple
 from rest_framework.renderers import TemplateHTMLRenderer
 from celery_app.tasks import run_test_suit
 from django.views.generic.base import View
+from django_filters.rest_framework import DjangoFilterBackend
+from pprint import pprint
+
 from apps.common.models import Business, Product, Store, UploadFile
 from apps.common.serializer import BusinessSerializer, StoreSerializer, ProductSerializer, UploadFileSerializer
 from apps.common.filters import BusinessFilter, StoreFilter, ProductFilter
-from django_filters.rest_framework import DjangoFilterBackend
 
 
-class PageSet(pagination.PageNumberPagination):
-    page_size = 12
-    page_size_query_param = "size"
-    page_query_param = "page"
-    max_page_size = 300
+
+
+# class PageSet(pagination.PageNumberPagination):
+#     page_size = 12
+#     page_size_query_param = "size"
+#     page_query_param = "page"
+#     max_page_size = 300
+#
+#     def get_paginated_response(self, data):
+#         return Response(OrderedDict([
+#             ('count', self.page.paginator.count),
+#             ('next', self.get_next_link()),
+#             ('previous', self.get_previous_link()),
+#             ('results', data)
+#         ]))
+
+class PageSet(pagination.LimitOffsetPagination):
+    default_limit = 10000
+    limit_query_param = 'limit'
+    offset_query_param = 'start'
+    max_limit = None
+    template = 'rest_framework/pagination/numbers.html'
+#     draw = 'draw'
+#
+#     def get_draw(self, request):
+#         try:
+#             return pagination._positive_int(
+#                 request.query_params[self.draw],
+#             )
+#         except (KeyError, ValueError):
+#             return 0
+#
+#     def get_paginated_response(self, data):
+#         return Response(OrderedDict([
+#             ('draw', self.draw),
+#             ('recordsTotal', self.get_next_link()),
+#             ('recordsFiltered', self.count),
+#             ('data', data)
+#         ]))
 
 
 class IndexView(View):
@@ -81,6 +119,7 @@ class UploadFileViewset(viewsets.ModelViewSet):
 class BusinessView(View):
     def get(self, request):
         return render(request, "hx/business.html")
+
 
 class BusinessViewOld(View):
     def get(self, request):
