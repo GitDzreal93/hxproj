@@ -49,7 +49,7 @@
 								<br>
 								<br>
 								<div class="col-md-4 col-sm-4 col-xs-12">
-									<p>库存区间：</p>
+									<label for="slider">库存区间</label>
 									<input type="text" id="slider" name="range" />
 								</div>
 							</div>
@@ -154,8 +154,8 @@
 				// 过滤参数
 				param.business_code = $("#business_code").val();
 				param.product_mod = $("#product_mod").val();
-				param.stock_count_min=sliderMin;
-				param.stock_count_max=sliderMax;
+				param.stock_count_min = sliderMin;
+				param.stock_count_max = sliderMax;
 				// 排序
 				param.ordering = '-id'
 				//console.log(param);
@@ -208,13 +208,9 @@
 				search();
 			}
 		});
-
-		function filter() {
-			oTable.draw();
-		}
-
+		
 		$("#filter_button").click(function () {
-			filter();
+			search();
 		});
 
 		$("#slider").ionRangeSlider({
