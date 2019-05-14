@@ -55,9 +55,10 @@ class BusinessAdmin(object):
 
 class StoreAdmin(object):
     list_display = ['store_code', 'store_name', 'business', 'create_time', 'modify_time']
-    search_fields = ['store_code', 'store_name', 'business']
+    search_fields = ['store_code', 'store_name']
     list_filter = ['store_code', 'store_name', 'business', 'create_time', 'modify_time']
     model_icon = 'fa fa-address-book-o'
+    relfield_style = 'fk-ajax'
 
 
 class ProductAdmin(object):

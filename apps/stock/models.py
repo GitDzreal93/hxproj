@@ -9,12 +9,12 @@ from apps.common.models import Product
 
 # Create your models here.
 class Stock(models.Model):
-    business = models.ForeignKey(Business, to_field="business_code", related_name="stock_business",
-                                 on_delete=models.CASCADE, verbose_name="商家名称",
-                                 help_text="商家名称")
-    product = models.ForeignKey(Product, to_field="product_mod", related_name="stock_product", on_delete=models.CASCADE,
-                                verbose_name="产品",
-                                help_text="产品")
+    business = models.ForeignKey(Business, to_field="business_code",
+                                 on_delete=models.CASCADE, verbose_name="商家代码",
+                                 help_text="商家代码")
+    product = models.ForeignKey(Product, to_field="product_mod", on_delete=models.CASCADE,
+                                verbose_name="产品代码",
+                                help_text="产品代码")
     stock_count = models.IntegerField(verbose_name="库存数", help_text="库存数")
     remarks = models.TextField(default='', null=True, blank=True, verbose_name="备注", help_text="备注")
     is_init = models.BooleanField(default=False, verbose_name="初始数据", help_text="是否是初始导入的数据")
@@ -30,7 +30,7 @@ class Stock(models.Model):
         db_table = "tb_stock"
         verbose_name = "库存"
         verbose_name_plural = verbose_name
-        unique_together=("business","product")
+        unique_together = ("business", "product")
 
 
 class StockHistory(models.Model):

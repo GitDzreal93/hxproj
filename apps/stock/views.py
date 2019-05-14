@@ -79,7 +79,7 @@ class StockNowViewset(viewsets.ModelViewSet):
     pagination_class = PageSet
     filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter,)
     filter_class = StockNowFilter
-    search_fields = ('business_id', 'product_id', 'stock_count')
+    search_fields = ('business__business_code', 'business__business_name', 'product__product_mod', 'stock_count')
     ordering_fields = ('business_id', 'product_id', 'stock_count')
 
 
@@ -93,84 +93,16 @@ class StockHistoryViewset(viewsets.ModelViewSet):
     pagination_class = PageSet
     filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter,)
     filter_class = StockHistoryFilter
-    search_fields = ('business_id', 'product_id', 'stock_count', 'record_time')
-    ordering_fields = ('business_id', 'product_id', 'stock_count', 'record_time')
+    search_fields = ('business__business_code', 'business__business_name', 'product__product_mod','stock_count', 'record_time')
+    ordering_fields = ('business_code', 'product_mod', 'stock_count', 'record_time')
 
 
 class StockNowView(View):
     def get(self, request):
-        queryset = Stock.objects.all()
-        data = {}
-        data["title"] = dict(
-            business_code='商家代码',
-            business_name='商家名称',
-            product_mod='产品型号',
-            stock_count='库存数',
-            modify_time='更新时间',
-            remark='备注'
-        )
-        order_record_lst = []
-        for order in queryset.values():
-            # 获取商家信息
-            business_code = order.get("business_id")
-            business_query = Business.objects.filter(business_code=business_code).values('business_name')
-            business_name = business_query[0].get("business_name")
-            # 产品型号
-            product_mod = order.get("product_id")
-
-            order_dict = dict(
-                business_code=business_code,
-                business_name=business_name,
-                product_mod=product_mod,
-                stock_count=order.get("stock_count"),
-                modify_time=order.get("modify_time")
-            )
-            order_record_lst.append(order_dict)
-        data["order_lst"] = order_record_lst
-        return render(request, 'hx/stock_now.html', {"data": data})
-
-
-# class StockHistoryView(View):
-#     def get(self, request):
-#         queryset = StockHistory.objects.all()
-#         data = {}
-#         data["title"] = dict(
-#             business_code='商家代码',
-#             business_name='商家名称',
-#             product_mod='产品型号',
-#             stock_count='库存数',
-#             modify_time='更新时间',
-#             remark='备注'
-#         )
-#         order_record_lst = []
-#         for order in queryset.values():
-#             # 获取商家信息
-#             business_code = order.get("business_id")
-#             business_query = Business.objects.filter(business_code=business_code).values('business_name')
-#             business_name = business_query[0].get("business_name")
-#             # 产品型号
-#             product_mod = order.get("product_id")
-#
-#             order_dict = dict(
-#                 business_code=business_code,
-#                 business_name=business_name,
-#                 product_mod=product_mod,
-#                 stock_count=order.get("stock_count"),
-#                 modify_time=order.get("modify_time")
-#             )
-#             order_record_lst.append(order_dict)
-#         data["order_lst"] = order_record_lst
-#         return render(request, 'hx/stock_now.html', {"data": data})
+        return render(request, 'hx/stock_now.html')
 
 
 class StockHistoryView(View):
     def get(self, request):
         return render(request, 'hx/stock_history.html')
 
-        # def post(self, request):
-        #     try:
-        #         result = refresh_stock_history.delay()
-        #         print(result)
-        #     except:
-        #         return render(request, 'history_stock.html', {"err": "fail"})
-        #     return render(request, 'history_stock.html', {"err": "suceess"})

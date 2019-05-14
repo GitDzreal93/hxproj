@@ -10,13 +10,13 @@ from .models import SupplyRecord
 
 
 class SupplyRecordAdmin(object):
-    list_display = ['id', 'business', 'product', 'order_date', 'order_id', 'count', 'price', 'total_price','remarks',
+    list_display = ['id', 'business', 'product', 'order_date', 'order_id', 'count', 'price', 'total_price', 'remarks',
                     'create_time']
-    search_fields = ['id', 'business', 'product', 'order_date', 'order_id', 'count', 'price', 'total_price']
+    search_fields = ['id', 'order_date', 'order_id', 'count', 'price', 'total_price']
     list_filter = ['id', 'business', 'product', 'order_date', 'order_id', 'count', 'price', 'total_price',
                    'create_time']
     model_icon = 'fa fa-address-book-o'
-
+    relfield_style = 'fk-ajax'
 
 
 xadmin.site.register(SupplyRecord, SupplyRecordAdmin)

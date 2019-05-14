@@ -90,7 +90,7 @@ class StoreViewset(viewsets.ModelViewSet):
     pagination_class = PageSet
     filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter,)
     filter_class = StoreFilter
-    search_fields = ('store_code', 'store_name')
+    search_fields = ('business__business_code','store_code', 'store_name')
     ordering_fields = ('business_id', 'store_code', 'store_name')
 
 

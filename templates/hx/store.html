@@ -24,7 +24,6 @@
 				</div>
 				<div class="x_content">
 					<div class="row" style="margin-bottom:10px">
-						<form class="form-label-left" role="form" action="{% url 'store' %}" method="get">
 							<div class="container">
 								<div class="row">
 									<div class="form-group col-lg-2">
@@ -58,7 +57,6 @@
 									</div>
 								</div>
 							</div>
-						</form>
 					</div>
 					<hr />
 					<textarea id="search_input_html" style="display:none">
@@ -149,7 +147,7 @@
 					// 搜索关键词
 					param.search = $("#search_key").val();
 					// 过滤参数
-					param.business_id = $("#business_code").val();
+					param.business_code = $("#business_code").val();
 					param.store_code = $("#store_code").val();
 					param.store_name = $("#store_name").val();
 					// 排序

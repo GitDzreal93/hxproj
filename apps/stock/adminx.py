@@ -11,9 +11,10 @@ from .models import Stock, StockHistory
 
 class StockAdmin(object):
     list_display = ['business', 'product', 'stock_count', 'is_init', 'remarks', 'create_time', 'modify_time']
-    search_fields = ['business', 'product', 'stock_count']
+    search_fields = ['stock_count']
     list_filter = ['business', 'product', 'stock_count', 'create_time', 'modify_time']
     model_icon = 'fa fa-address-book-o'
+    relfield_style = 'fk-ajax'
 
 
 class StockHistoryAdmin(object):
@@ -21,6 +22,7 @@ class StockHistoryAdmin(object):
     search_fields = ['business', 'product', 'stock_count']
     list_filter = ['business', 'product', 'stock_count', 'create_time']
     model_icon = 'fa fa-address-book-o'
+    relfield_style = 'fk-ajax'
 
 
 xadmin.site.register(Stock, StockAdmin)
