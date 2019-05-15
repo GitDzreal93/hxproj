@@ -84,42 +84,10 @@ class SupplyRecordViewset(viewsets.ModelViewSet):
     pagination_class = PageSet
     filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter,)
     filter_class = SupplyRecordFilter
-    search_fields = ('business_id', 'product_id', 'order_id', 'order_date')
+    search_fields = ('business__business_code','business__business_name', 'product__product_mod','total_price','price','count','order_id', 'order_date')
     ordering_fields = ('business_id', 'product_id', 'id', 'order_id', 'order_date')
 
 
 class SupplyRecordView(View):
     def get(self, request):
-        queryset = SupplyRecord.objects.all()
-        data = {}
-        data["title"] = dict(
-            business_code='商家代码',
-            business_name='商家名称',
-            product_mod='产品型号',
-            order_id='订单号',
-            price='供价',
-            count='要货数量',
-            total_price='要货金额',
-            remark='备注'
-        )
-        order_record_lst = []
-        for order in queryset.values():
-            # 获取商家信息
-            business_code = order.get("business_id")
-            business_query = Business.objects.filter(business_code=business_code).values('business_name')
-            business_name = business_query[0].get("business_name")
-            # 产品型号
-            product_mod = order.get("product_id")
-            order_dict = dict(
-                business_code=business_code,
-                business_name=business_name,
-                product_mod=product_mod,
-                order_id=order.get("order_id"),
-                count=order.get("count"),
-                price=order.get("price"),
-                total_price=order.get("total_price"),
-                remark=order.get("remark"),
-            )
-            order_record_lst.append(order_dict)
-        data["order_lst"] = order_record_lst
-        return render(request, 'hx/supply_record_bak.html', {"data": data})
+        return render(request, 'hx/supply_record.html')
