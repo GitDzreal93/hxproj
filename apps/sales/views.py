@@ -113,8 +113,10 @@ class SalesRecordViewset(viewsets.ModelViewSet):
     @list_route(methods=['get'])
     def sales_calc(self, request):
         filter_class = self.filter_class
-        f = filter_class(request.GET, queryset=SalesRecord.objects.all())
-        qs = f.qs
+        f = filter_class(request.GET, queryset=SalesRecord.objects.all()).qs
+        if request.query_params.get("search"):
+            f = filters.SearchFilter().filter_queryset(self.request, SalesRecord.objects.all(), self)
+        qs = f
         calc_result = dict(
             bussiness_count=qs.values('business_id').distinct().count(),
             store_count=qs.values('store_id').distinct().count(),

@@ -286,6 +286,7 @@
 			param.product_mod = $("#product_mod").val();
 			param.sales_date_after = dateAfter;
 			param.sales_date_before = dateBefore;
+			param.search = $("#search_key").val();
 			$.ajax({
 				type: "GET",
 				url: "/sales/api/sales-record/sales_calc/",
