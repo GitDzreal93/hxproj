@@ -107,7 +107,7 @@ class SalesRecordViewset(viewsets.ModelViewSet):
     pagination_class = PageSet
     filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter,)
     filter_class = SalesRecordFilter
-    search_fields = ('business_id', 'store_id', 'product_id')
+    search_fields = ('business__business_code', 'business__business_name', 'product__product_mod','store__store_code','store__store_name')
     ordering_fields = ('business_id', 'store_id', 'product_id', 'sales_time')
 
     @list_route(methods=['get'])
