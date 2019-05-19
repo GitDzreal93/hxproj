@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from apps.common.views import IndexView
+from apps.common.views import BusinessView
 from rest_framework_swagger.views import get_swagger_view
 import xadmin
 
@@ -25,8 +25,8 @@ urlpatterns = [
     # xadmin
     path('xadmin/', xadmin.site.urls),
     # 首页
-    path('', IndexView.as_view(), name="index"),
-    path('index/', IndexView.as_view(), name="index"),
+    path('', BusinessView.as_view(), name="index"),
+    path('index/', BusinessView.as_view(), name="index"),
     # 公共组件
     path('common/', include('common.urls')),
     # 销
