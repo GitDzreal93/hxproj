@@ -31,7 +31,10 @@ SECRET_KEY = 'x5zhvo8j*+a_3i!$sowntstbvt*+538!@6i9+9gp^ox^172txc'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# dev
+# ALLOWED_HOSTS = []
+# online
+ALLOWED_HOSTS = ['123.206.30.153', 'localhost', '0.0.0.0:8020', '127.0.0.1']
 
 # superuser:
 # huangdazhen
@@ -100,10 +103,19 @@ WSGI_APPLICATION = 'hxproj.wsgi.application'
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
 DATABASES = {
+    # dev
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': "db_hxproj",
+    #     'USER': 'root',
+    #     'PASSWORD': "root",
+    #     'HOST': "127.0.0.1"
+    # }
+    # online
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': "db_hxproj",
-        'USER': 'root',
+        'NAME': "hxproj",
+        'USER': 'hxproj',
         'PASSWORD': "root",
         'HOST': "127.0.0.1"
     }
