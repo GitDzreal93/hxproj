@@ -648,7 +648,7 @@
     MENU: 'dropdown-menu',
     MENURIGHT: 'dropdown-menu-right',
     MENULEFT: 'dropdown-menu-left',
-    // to-do: replace with more advanced template/customization options
+    // to-do: replace with more advanced template_file/customization options
     BUTTONCLASS: 'btn-default',
     POPOVERHEADER: 'popover-title'
   }

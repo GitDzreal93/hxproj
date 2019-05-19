@@ -2569,7 +2569,7 @@ var Date = global.Date
 exports = module.exports = HTML;
 
 /**
- * Stats template.
+ * Stats template_file.
  */
 
 var statsTemplate = '<ul id="mocha-stats">'

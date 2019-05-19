@@ -20,7 +20,7 @@ router.register('api/sales-record', SalesRecordViewset, base_name="sales_record_
 # router.register('api/sales-upload',SalesUploadViewset, base_name='sales_upload')
 
 urlpatterns = [
-    path('sales-upload', UploadSalesDetailView.as_view(), name="sales_upload"),
-    path('sales-record', SalesRecordView.as_view(), name='sales_record'),
+    path('sales-upload/', UploadSalesDetailView.as_view(), name="sales_upload"),
+    path('sales-record/', SalesRecordView.as_view(), name='sales_record'),
 ]
 urlpatterns += router.urls

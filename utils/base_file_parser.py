@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 # 独立使用django的model
-import sys
 import os
+import sys
 import abc
 
 import pandas as pd

@@ -18,6 +18,7 @@ from django.db.models.signals import pre_migrate, post_migrate
 from django.test.signals import setting_changed
 from django.test.signals import template_rendered
 from django.db.backends.signals import connection_created
+from rest_framework.response import Response
 
 from hxproj import settings
 from apps.common.models import UploadFile, Business, Product, Store
@@ -65,4 +66,4 @@ def callback_calc_stock(sender, instance=None, created=False, **kwargs):
     # 计算库存后入库存库
 
     # print("3")
-    return None
+    return Response(data={"msg":'success'})

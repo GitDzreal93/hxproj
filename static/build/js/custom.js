@@ -39,8 +39,8 @@
 
 /**
  * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * To change this template_file file, choose Tools | Templates
+ * and open the template_file in the editor.
  */
 
 var CURRENT_URL = window.location.href.split('#')[0].split('?')[0],

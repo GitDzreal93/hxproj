@@ -35,7 +35,7 @@
       this._xhrCache = {};
 
       if (!this.options.url || !this.options.handler || !this.options.template)
-        throw new Error('You must define a widget url, an ajax handler and a template');
+        throw new Error('You must define a widget url, an ajax handler and a template_file');
 
       this
         ._initActions()
@@ -187,13 +187,13 @@
     var cache = {};
 
     this.tmpl = function tmpl(str, data){
-      // Figure out if we're getting a template, or if we need to
-      // load the template - and be sure to cache the result.
+      // Figure out if we're getting a template_file, or if we need to
+      // load the template_file - and be sure to cache the result.
       var fn = !/\W/.test(str) ?
         cache[str] = cache[str] ||
           tmpl(document.getElementById(str).innerHTML) :
 
-        // Generate a reusable function that will serve as a template
+        // Generate a reusable function that will serve as a template_file
         // generator (and which will be cached).
         new Function("obj",
           "var p=[],print=function(){p.push.apply(p,arguments);};" +
@@ -201,7 +201,7 @@
           // Introduce the data as local variables using with(){}
           "with(obj){p.push('" +
 
-          // Convert the template into pure JavaScript
+          // Convert the template_file into pure JavaScript
           str
             .replace(/[\r\t\n]/g, " ")
             .split("<%").join("\t")

@@ -13,9 +13,8 @@ from __future__ import absolute_import
 import os
 import sys
 import djcelery
+
 djcelery.setup_loader()
-
-
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -97,7 +96,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'hxproj.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
@@ -129,13 +127,15 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # DRF配置
 REST_FRAMEWORK = {
     # 'DEFAULT_AUTHENTICATION_CLASSES': (
     #     'rest_framework.authentication.BasicAuthentication',
     #     'rest_framework.authentication.SessionAuthentication',
     # ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
         # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
@@ -152,7 +152,6 @@ REST_FRAMEWORK = {
     # }}
 }
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
@@ -166,7 +165,6 @@ USE_L10N = True
 
 USE_TZ = False
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
@@ -177,14 +175,14 @@ STATICFILES_DIRS = (
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+FILE_TEMPLATE_ROOT = os.path.join(MEDIA_ROOT, 'template_file')
 UPLOAD_ROOT = os.path.join(MEDIA_ROOT, 'upload')
-
 
 EMAIL_HOST = "smtp.126.com"
 EMAIL_PORT = 25
 EMAIL_HOST_USER = "dzreal_test@126.com"
 EMAIL_HOST_PASSWORD = "az931020"
-EMAIL_USE_TLS= False
+EMAIL_USE_TLS = False
 EMAIL_FROM = "dzreal_test@126.com"
 
 # celery

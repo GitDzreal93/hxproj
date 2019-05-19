@@ -102,7 +102,7 @@ var prettyPrint;
       "concept,concept_map,const_cast,constexpr,decltype,delegate," +
       "dynamic_cast,explicit,export,friend,generic,late_check," +
       "mutable,namespace,nullptr,property,reinterpret_cast,static_assert," +
-      "static_cast,template,typeid,typename,using,virtual,where"];
+      "static_cast,template_file,typeid,typename,using,virtual,where"];
   var JAVA_KEYWORDS = [COMMON_KEYWORDS,
       "abstract,assert,boolean,byte,extends,final,finally,implements,import," +
       "instanceof,interface,null,native,package,strictfp,super,synchronized," +

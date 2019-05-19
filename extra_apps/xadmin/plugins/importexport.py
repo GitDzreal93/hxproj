@@ -93,7 +93,7 @@ class ImportBaseView(ModelAdminView):
     """
     resource_class = None
     import_export_args = {}
-    #: template for import view
+    #: template_file for import view
     import_template_name = 'xadmin/import_export/import.html'
     #: resource class
     #: available import formats
@@ -318,10 +318,10 @@ class ImportProcessView(ImportBaseView):
 class ExportMixin(object):
     #: resource class
     resource_class = None
-    #: template for change_list view
+    #: template_file for change_list view
     change_list_template = None
     import_export_args = {}
-    #: template for export view
+    #: template_file for export view
     # export_template_name = 'xadmin/import_export/export.html'
     #: available export formats
     formats = DEFAULT_FORMATS

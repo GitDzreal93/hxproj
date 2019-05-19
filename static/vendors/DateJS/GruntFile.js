@@ -130,7 +130,7 @@ module.exports = function(grunt) {
 			],
 			options : {
 				specs : "specs/*-spec.js",
-				template : require("grunt-template-jasmine-istanbul"),
+				template : require("grunt-template_file-jasmine-istanbul"),
 				templateOptions: {
 					template: "specs/jasmine-2.0.3/specrunner.tmpl",
 					coverage: "reports/coverage.json",

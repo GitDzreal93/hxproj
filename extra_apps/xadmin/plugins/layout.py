@@ -14,13 +14,13 @@ DEFAULT_LAYOUTS = {
         'key': 'table',
         'icon': 'fa fa-table',
         'name': _(u'Table'),
-        'template': 'views/model_list.html',
+        'template_file': 'views/model_list.html',
     },
     'thumbnails': {
         'key': 'thumbnails',
         'icon': 'fa fa-th-large',
         'name': _(u'Thumbnails'),
-        'template': 'grids/thumbnails.html',
+        'template_file': 'grids/thumbnails.html',
     },
 }
 
@@ -47,7 +47,7 @@ class GridLayoutPlugin(BaseAdminPlugin):
                 if self._current_layout == layout['key']:
                     self._current_icon = layout['icon']
                     layout['selected'] = True
-                    self.admin_view.object_list_template = self.admin_view.get_template_list(layout['template'])
+                    self.admin_view.object_list_template = self.admin_view.get_template_list(layout['template_file'])
         return active
 
     def result_item(self, item, obj, field_name, row):

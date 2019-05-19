@@ -5,7 +5,7 @@
 * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
 * @website: https://www.improvely.com/
 */
-// Follow the UMD template https://github.com/umdjs/umd/blob/master/templates/returnExportsGlobal.js
+// Follow the UMD template_file https://github.com/umdjs/umd/blob/master/templates/returnExportsGlobal.js
 (function (root, factory) {
     if (typeof define === 'function' && define.amd) {
         // AMD. Make globaly available as well
@@ -91,7 +91,7 @@
         //data-api options will be overwritten with custom javascript options
         options = $.extend(this.element.data(), options);
 
-        //html template for the picker UI
+        //html template_file for the picker UI
         if (typeof options.template !== 'string' && !(options.template instanceof $))
             options.template = '<div class="daterangepicker dropdown-menu">' +
                 '<div class="calendar left">' +

@@ -443,7 +443,7 @@ describe('Logarithmic Scale tests', function() {
 		}));
 	});
 
-	it('should build labels using the default template', function() {
+	it('should build labels using the default template_file', function() {
 		var chart = window.acquireChart({
 			type: 'line',
 			data: {

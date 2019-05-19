@@ -2474,7 +2474,7 @@
 	      uint16Tag = '[object Uint16Array]',
 	      uint32Tag = '[object Uint32Array]';
 
-	  /** Used to match empty string literals in compiled template source. */
+	  /** Used to match empty string literals in compiled template_file source. */
 	  var reEmptyStringLeading = /\b__p \+= '';/g,
 	      reEmptyStringMiddle = /\b(__p \+=) '' \+/g,
 	      reEmptyStringTrailing = /(__e\(.*?\)|\b__t\)) \+\n'';/g;
@@ -2485,7 +2485,7 @@
 	      reHasEscapedHtml = RegExp(reEscapedHtml.source),
 	      reHasUnescapedHtml = RegExp(reUnescapedHtml.source);
 
-	  /** Used to match template delimiters. */
+	  /** Used to match template_file delimiters. */
 	  var reEscape = /<%-([\s\S]+?)%>/g,
 	      reEvaluate = /<%([\s\S]+?)%>/g,
 	      reInterpolate = /<%=([\s\S]+?)%>/g;
@@ -2508,7 +2508,7 @@
 	  /** Used to match backslashes in property paths. */
 	  var reEscapeChar = /\\(\\)?/g;
 
-	  /** Used to match [ES template delimiters](http://ecma-international.org/ecma-262/6.0/#sec-template-literal-lexical-components). */
+	  /** Used to match [ES template_file delimiters](http://ecma-international.org/ecma-262/6.0/#sec-template-literal-lexical-components). */
 	  var reEsTemplate = /\$\{([^\\}]*(?:\\.[^\\}]*)*)\}/g;
 
 	  /** Used to match `RegExp` flags from their coerced string values. */
@@ -2526,7 +2526,7 @@
 	  /** Used to match latin-1 supplementary letters (excluding mathematical operators). */
 	  var reLatin1 = /[\xc0-\xd6\xd8-\xde\xdf-\xf6\xf8-\xff]/g;
 
-	  /** Used to ensure capturing order of template delimiters. */
+	  /** Used to ensure capturing order of template_file delimiters. */
 	  var reNoMatch = /($^)/;
 
 	  /** Used to match unescaped characters in compiled string literals. */
@@ -2549,7 +2549,7 @@
 	    'Uint8ClampedArray', 'Uint16Array', 'Uint32Array', 'WeakMap'
 	  ];
 
-	  /** Used to make template sourceURLs easier to identify. */
+	  /** Used to make template_file sourceURLs easier to identify. */
 	  var templateCounter = -1;
 
 	  /** Used to identify `toStringTag` values of typed arrays. */
@@ -2909,7 +2909,7 @@
 	  }
 
 	  /**
-	   * Used by `_.template` to escape characters for inclusion in compiled string literals.
+	   * Used by `_.template_file` to escape characters for inclusion in compiled string literals.
 	   *
 	   * @private
 	   * @param {string} chr The matched character to escape.
@@ -3256,7 +3256,7 @@
 	     * `now`, `pad`, `padLeft`, `padRight`, `parseInt`, `pop`, `random`, `reduce`,
 	     * `reduceRight`, `repeat`, `result`, `round`, `runInContext`, `shift`, `size`,
 	     * `snakeCase`, `some`, `sortedIndex`, `sortedLastIndex`, `startCase`,
-	     * `startsWith`, `sum`, `template`, `trim`, `trimLeft`, `trimRight`, `trunc`,
+	     * `startsWith`, `sum`, `template_file`, `trim`, `trimLeft`, `trimRight`, `trunc`,
 	     * `unescape`, `uniqueId`, `value`, and `words`
 	     *
 	     * The wrapper method `sample` will return a wrapped value when `n` is provided,
@@ -3333,8 +3333,8 @@
 	    var support = lodash.support = {};
 
 	    /**
-	     * By default, the template delimiters used by lodash are like those in
-	     * embedded Ruby (ERB). Change the following template settings to use
+	     * By default, the template_file delimiters used by lodash are like those in
+	     * embedded Ruby (ERB). Change the following template_file settings to use
 	     * alternative delimiters.
 	     *
 	     * @static
@@ -3368,7 +3368,7 @@
 	      'interpolate': reInterpolate,
 
 	      /**
-	       * Used to reference the data object in the template text.
+	       * Used to reference the data object in the template_file text.
 	       *
 	       * @memberOf _.templateSettings
 	       * @type string
@@ -3376,7 +3376,7 @@
 	      'variable': '',
 
 	      /**
-	       * Used to import variables into the compiled template.
+	       * Used to import variables into the compiled template_file.
 	       *
 	       * @memberOf _.templateSettings
 	       * @type Object
@@ -3930,7 +3930,7 @@
 	    }
 
 	    /**
-	     * Used by `_.template` to customize its `_.assign` use.
+	     * Used by `_.template_file` to customize its `_.assign` use.
 	     *
 	     * **Note:** This function is like `assignDefaults` except that it ignores
 	     * inherited property values when checking if a property is `undefined`.
@@ -9071,7 +9071,7 @@
 	     * The guarded methods are:
 	     * `ary`, `callback`, `chunk`, `clone`, `create`, `curry`, `curryRight`,
 	     * `drop`, `dropRight`, `every`, `fill`, `flatten`, `invert`, `max`, `min`,
-	     * `parseInt`, `slice`, `sortBy`, `take`, `takeRight`, `template`, `trim`,
+	     * `parseInt`, `slice`, `sortBy`, `take`, `takeRight`, `template_file`, `trim`,
 	     * `trimLeft`, `trimRight`, `trunc`, `random`, `range`, `sample`, `some`,
 	     * `sum`, `uniq`, and `words`
 	     *
@@ -13018,13 +13018,13 @@
 	    }
 
 	    /**
-	     * Creates a compiled template function that can interpolate data properties
+	     * Creates a compiled template_file function that can interpolate data properties
 	     * in "interpolate" delimiters, HTML-escape interpolated data properties in
 	     * "escape" delimiters, and execute JavaScript in "evaluate" delimiters. Data
-	     * properties may be accessed as free variables in the template. If a setting
+	     * properties may be accessed as free variables in the template_file. If a setting
 	     * object is provided it takes precedence over `_.templateSettings` values.
 	     *
-	     * **Note:** In the development build `_.template` utilizes
+	     * **Note:** In the development build `_.template_file` utilizes
 	     * [sourceURLs](http://www.html5rocks.com/en/tutorials/developertools/sourcemaps/#toc-sourceurl)
 	     * for easier debugging.
 	     *
@@ -13037,67 +13037,67 @@
 	     * @static
 	     * @memberOf _
 	     * @category String
-	     * @param {string} [string=''] The template string.
+	     * @param {string} [string=''] The template_file string.
 	     * @param {Object} [options] The options object.
 	     * @param {RegExp} [options.escape] The HTML "escape" delimiter.
 	     * @param {RegExp} [options.evaluate] The "evaluate" delimiter.
-	     * @param {Object} [options.imports] An object to import into the template as free variables.
+	     * @param {Object} [options.imports] An object to import into the template_file as free variables.
 	     * @param {RegExp} [options.interpolate] The "interpolate" delimiter.
-	     * @param {string} [options.sourceURL] The sourceURL of the template's compiled source.
+	     * @param {string} [options.sourceURL] The sourceURL of the template_file's compiled source.
 	     * @param {string} [options.variable] The data object variable name.
 	     * @param- {Object} [otherOptions] Enables the legacy `options` param signature.
-	     * @returns {Function} Returns the compiled template function.
+	     * @returns {Function} Returns the compiled template_file function.
 	     * @example
 	     *
-	     * // using the "interpolate" delimiter to create a compiled template
-	     * var compiled = _.template('hello <%= user %>!');
+	     * // using the "interpolate" delimiter to create a compiled template_file
+	     * var compiled = _.template_file('hello <%= user %>!');
 	     * compiled({ 'user': 'fred' });
 	     * // => 'hello fred!'
 	     *
 	     * // using the HTML "escape" delimiter to escape data property values
-	     * var compiled = _.template('<b><%- value %></b>');
+	     * var compiled = _.template_file('<b><%- value %></b>');
 	     * compiled({ 'value': '<script>' });
 	     * // => '<b>&lt;script&gt;</b>'
 	     *
 	     * // using the "evaluate" delimiter to execute JavaScript and generate HTML
-	     * var compiled = _.template('<% _.forEach(users, function(user) { %><li><%- user %></li><% }); %>');
+	     * var compiled = _.template_file('<% _.forEach(users, function(user) { %><li><%- user %></li><% }); %>');
 	     * compiled({ 'users': ['fred', 'barney'] });
 	     * // => '<li>fred</li><li>barney</li>'
 	     *
 	     * // using the internal `print` function in "evaluate" delimiters
-	     * var compiled = _.template('<% print("hello " + user); %>!');
+	     * var compiled = _.template_file('<% print("hello " + user); %>!');
 	     * compiled({ 'user': 'barney' });
 	     * // => 'hello barney!'
 	     *
 	     * // using the ES delimiter as an alternative to the default "interpolate" delimiter
-	     * var compiled = _.template('hello ${ user }!');
+	     * var compiled = _.template_file('hello ${ user }!');
 	     * compiled({ 'user': 'pebbles' });
 	     * // => 'hello pebbles!'
 	     *
-	     * // using custom template delimiters
+	     * // using custom template_file delimiters
 	     * _.templateSettings.interpolate = /{{([\s\S]+?)}}/g;
-	     * var compiled = _.template('hello {{ user }}!');
+	     * var compiled = _.template_file('hello {{ user }}!');
 	     * compiled({ 'user': 'mustache' });
 	     * // => 'hello mustache!'
 	     *
 	     * // using backslashes to treat delimiters as plain text
-	     * var compiled = _.template('<%= "\\<%- value %\\>" %>');
+	     * var compiled = _.template_file('<%= "\\<%- value %\\>" %>');
 	     * compiled({ 'value': 'ignored' });
 	     * // => '<%- value %>'
 	     *
 	     * // using the `imports` option to import `jQuery` as `jq`
 	     * var text = '<% jq.each(users, function(user) { %><li><%- user %></li><% }); %>';
-	     * var compiled = _.template(text, { 'imports': { 'jq': jQuery } });
+	     * var compiled = _.template_file(text, { 'imports': { 'jq': jQuery } });
 	     * compiled({ 'users': ['fred', 'barney'] });
 	     * // => '<li>fred</li><li>barney</li>'
 	     *
-	     * // using the `sourceURL` option to specify a custom sourceURL for the template
-	     * var compiled = _.template('hello <%= user %>!', { 'sourceURL': '/basic/greeting.jst' });
+	     * // using the `sourceURL` option to specify a custom sourceURL for the template_file
+	     * var compiled = _.template_file('hello <%= user %>!', { 'sourceURL': '/basic/greeting.jst' });
 	     * compiled(data);
 	     * // => find the source of "greeting.jst" under the Sources tab or Resources panel of the web inspector
 	     *
-	     * // using the `variable` option to ensure a with-statement isn't used in the compiled template
-	     * var compiled = _.template('hi <%= data.user %>!', { 'variable': 'data' });
+	     * // using the `variable` option to ensure a with-statement isn't used in the compiled template_file
+	     * var compiled = _.template_file('hi <%= data.user %>!', { 'variable': 'data' });
 	     * compiled.source;
 	     * // => function(data) {
 	     * //   var __t, __p = '';
@@ -13109,7 +13109,7 @@
 	     * // line numbers in error messages and a stack trace
 	     * fs.writeFileSync(path.join(cwd, 'jst.js'), '\
 	     *   var JST = {\
-	     *     "main": ' + _.template(mainText).source + '\
+	     *     "main": ' + _.template_file(mainText).source + '\
 	     *   };\
 	     * ');
 	     */

@@ -1,8 +1,8 @@
-from django.shortcuts import render
+import os
 import pandas as pd
 
 # Create your views here.
-from django.http import HttpResponse
+from django.http import FileResponse,Http404
 from django.shortcuts import render
 from rest_framework import viewsets, filters, pagination
 from rest_framework.response import Response
@@ -13,9 +13,28 @@ from django.views.generic.base import View
 from django_filters.rest_framework import DjangoFilterBackend
 from pprint import pprint
 
+from hxproj import settings
 from apps.common.models import Business, Product, Store, UploadFile
 from apps.common.serializer import BusinessSerializer, StoreSerializer, ProductSerializer, UploadFileSerializer
 from apps.common.filters import BusinessFilter, StoreFilter, ProductFilter
+
+
+class DownLoadTemplateFile(View):
+    def get(self, request):
+        # print(dir(request.GET))
+        # print(request.GET.get("file"))
+        template_file = os.path.join(settings.FILE_TEMPLATE_ROOT, request.GET.get("file"))
+        print(template_file)
+        # file_end = template_file.split('.')[-1]
+        if os.path.isfile(template_file):
+            file = open(template_file, 'rb')
+            print(file)
+            response = FileResponse(file)
+            print(response)
+            response["Content-type"] = "application/vnd.ms-excel"
+            # response["Content-type"] = "application/x-xls"
+            response['Content-Disposition'] = 'attachment;filename="海信进存销-上传文件模版.xls"'
+            return response
 
 
 class PageSet(pagination.LimitOffsetPagination):
@@ -57,7 +76,7 @@ class StoreViewset(viewsets.ModelViewSet):
     pagination_class = PageSet
     filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter,)
     filter_class = StoreFilter
-    search_fields = ('business__business_code','store_code', 'store_name')
+    search_fields = ('business__business_code', 'store_code', 'store_name')
     ordering_fields = ('business_id', 'store_code', 'store_name')
 
 
@@ -96,3 +115,8 @@ class StoreView(View):
 class ProductView(View):
     def get(self, request):
         return render(request, "hx/product.html")
+
+
+class UploadFileView(View):
+    def get(self, request):
+        return render(request, "hx/upload_file.html")

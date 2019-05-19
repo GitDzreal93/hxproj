@@ -1467,7 +1467,7 @@
             tActionDrag = '<span class="file-drag-handle {dragClass}" title="{dragTitle}">{dragIcon}</span>';
             tIndicator = '<div class="file-upload-indicator" title="{indicatorTitle}">{indicator}</div>';
             tTagBef = '<div class="file-preview-frame {frameClass}" id="{previewId}" data-fileindex="{fileindex}"' +
-                ' data-fileid="{fileid}" data-template="{template}"';
+                ' data-fileid="{fileid}" data-template_file="{template_file}"';
             tTagBef1 = tTagBef + '><div class="kv-file-content">\n';
             tTagBef2 = tTagBef + ' title="{caption}"><div class="kv-file-content">\n';
             tTagAft = '</div>{footer}\n</div>\n';
@@ -2592,7 +2592,7 @@
                 $zoomPreview = self.$preview.find('#zoom-' + previewId), $modal = self.$modal, $tmp,
                 $btnFull = $modal.find('.btn-fullscreen'), $btnBord = $modal.find('.btn-borderless'), cap, size,
                 $btnTogh = $modal.find('.btn-toggleheader');
-            tmplt = $zoomPreview.attr('data-template') || 'generic';
+            tmplt = $zoomPreview.attr('data-template_file') || 'generic';
             $content = $zoomPreview.find('.kv-file-content');
             body = $content.length ? $content.html() : '';
             cap = $frame.data('caption') || '';

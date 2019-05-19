@@ -2137,7 +2137,7 @@
 				optgroup = groups_order[i];
 				if (self.optgroups.hasOwnProperty(optgroup) && groups[optgroup].length) {
 					// render the optgroup header and options within it,
-					// then pass it to the wrapper template
+					// then pass it to the wrapper template_file
 					html_children = self.render('optgroup_header', self.optgroups[optgroup]) || '';
 					html_children += groups[optgroup].join('');
 					html.push(self.render('optgroup', $.extend({}, self.optgroups[optgroup], {
@@ -3122,8 +3122,8 @@
 		},
 	
 		/**
-		 * Clears the render cache for a template. If
-		 * no template is given, clears all render
+		 * Clears the render cache for a template_file. If
+		 * no template_file is given, clears all render
 		 * caches.
 		 *
 		 * @param {string} templateName
